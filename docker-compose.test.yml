@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: cafeteria_db_test
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: adminpassword
+      POSTGRES_DB: cafeteria_test
+      TZ: America/Argentina/Buenos_Aires
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_test_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: cafeteria_pgadmin_test
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@cafeteria.com
+      PGADMIN_DEFAULT_PASSWORD: adminpassword
+    ports:
+      - "5051:80"
+    restart: unless-stopped
+    depends_on:
+      - postgres
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: cafeteria_backend_test
+    environment:
+      DATABASE_URL: postgresql://admin:adminpassword@postgres:5432/cafeteria_test?schema=public
+      PORT: 3000
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: cafeteria_frontend_test
+    ports:
+      - "8081:80"
+    restart: unless-stopped
+    depends_on:
+      - backend
+
+volumes:
+  postgres_test_data:

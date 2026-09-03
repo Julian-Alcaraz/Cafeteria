@@ -19,16 +19,28 @@
     "test:watch": "vitest",
     "test:cov": "vitest run --coverage",
     "test:debug": "vitest --inspect-brk --no-file-parallelism",
-    "test:e2e": "vitest run --config ./vitest.config.e2e.ts"
+    "test:e2e": "vitest run --config ./vitest.config.e2e.ts",
+    "typeorm": "node --loader ts-node/esm ./node_modules/typeorm/cli.js",
+    "db:migrate": "npm run typeorm migration:run -- -d src/config/typeorm.config.ts",
+    "db:migrate:generate": "npm run typeorm migration:generate -- -d src/config/typeorm.config.ts",
+    "db:migrate:create": "npm run typeorm migration:create",
+    "db:migrate:revert": "npm run typeorm migration:revert -- -d src/config/typeorm.config.ts",
+    "db:seed": "node --loader ts-node/esm src/seeds/run-seed.ts",
+    "db:reset": "npm run typeorm schema:drop -- -d src/config/typeorm.config.ts && npm run db:migrate && npm run db:seed",
+    "db:migrate:prod": "node ./node_modules/typeorm/cli.js migration:run -d dist/config/typeorm.config.js"
   },
   "dependencies": {
     "@nestjs/common": "^12.0.1",
+    "@nestjs/config": "^12.0.0",
     "@nestjs/core": "^12.0.1",
     "@nestjs/platform-express": "^12.0.1",
     "@nestjs/swagger": "^12.0.1",
+    "@nestjs/typeorm": "^12.0.1",
+    "pg": "^8.23.0",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1",
-    "swagger-ui-express": "^5.0.1"
+    "swagger-ui-express": "^5.0.1",
+    "typeorm": "^1.1.1"
   },
   "devDependencies": {
     "@nestjs/cli": "^12.0.0",
@@ -39,10 +51,12 @@
     "@types/node": "^24.0.0",
     "@types/supertest": "^7.0.0",
     "@vitest/coverage-v8": "^4.1.2",
+    "dotenv": "^17.4.2",
     "oxlint": "^1.58.0",
     "prettier": "^3.4.2",
     "source-map-support": "^0.5.21",
     "supertest": "^7.0.0",
+    "ts-node": "^10.9.2",
     "typescript": "^6.0.2",
     "vite-tsconfig-paths": "^5.1.4",
     "vitest": "^4.1.2"
