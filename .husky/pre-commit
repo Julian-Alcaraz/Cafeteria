@@ -1,0 +1,19 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+echo "Running pre-commit checks..."
+
+# Check Backend
+echo "Backend: Linting..."
+npm run lint --prefix backend || exit 1
+
+echo "Backend: Testing (requires 80% coverage)..."
+npm run test:cov --prefix backend || exit 1
+
+# Check Frontend
+# (Angular tests can be slow, but we'll include it per rules. We use ng test without watch mode and with coverage)
+echo "Frontend: Testing (requires 80% coverage)..."
+# In angular 22 using vitest:
+cd frontend && npx vitest run --coverage || exit 1
+
+echo "All pre-commit checks passed!"

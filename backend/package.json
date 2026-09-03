@@ -27,7 +27,8 @@
     "db:migrate:revert": "npm run typeorm migration:revert -- -d src/config/typeorm.config.ts",
     "db:seed": "node --loader ts-node/esm src/seeds/run-seed.ts",
     "db:reset": "npm run typeorm schema:drop -- -d src/config/typeorm.config.ts && npm run db:migrate && npm run db:seed",
-    "db:migrate:prod": "node ./node_modules/typeorm/cli.js migration:run -d dist/config/typeorm.config.js"
+    "db:migrate:prod": "node ./node_modules/typeorm/cli.js migration:run -d dist/config/typeorm.config.js",
+    "prepare": "husky"
   },
   "dependencies": {
     "@nestjs/common": "^12.0.1",
@@ -36,6 +37,8 @@
     "@nestjs/platform-express": "^12.0.1",
     "@nestjs/swagger": "^12.0.1",
     "@nestjs/typeorm": "^12.0.1",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.15.1",
     "pg": "^8.23.0",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1",
