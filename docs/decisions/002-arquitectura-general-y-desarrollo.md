@@ -10,7 +10,7 @@ Antes de iniciar con el desarrollo de los requerimientos de negocio, es necesari
 
 ### 2. Frontend (Angular)
 - **UI y Estilos**: Se utilizará CSS nativo para componentes simples (ej. inputs, botones estándar). **PrimeNG** se reservará estrictamente para componentes complejos que aporten valor significativo (ej. tablas de datos dinámicas, gráficos, modales complejos).
-- **Manejo de Estado**: Se utilizarán **Signals** nativos de Angular para el estado reactivo.
+- **Manejo de Estado**: Se utilizarán **Signals** nativos de Angular para el estado reactivo. **REGLA ESTRICTA:** Dado que la aplicación funciona en modo *Zoneless* (sin `zone.js`), Angular no detecta los cambios automáticamente. Es **OBLIGATORIO usar Signals** para todas las variables del componente que se vinculen a la vista (HTML); si no se usan, las recargas y repintados en pantalla no funcionarán correctamente tras peticiones asíncronas.
 - **Estructura y Arquitectura**: 
   - Se utilizarán **Standalone Components**.
   - Todo componente debe mantener la estructura estandarizada de 4 archivos: `.ts`, `.html`, `.css`, y `.spec.ts`.

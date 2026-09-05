@@ -1,0 +1,35 @@
+<div class="app-layout">
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <h3>Cafetería</h3>
+    </div>
+    
+    <nav class="sidebar-nav">
+      <ul *ngIf="authService.session() as session">
+        <li *ngFor="let menu of session.menus">
+          <a [routerLink]="menu.url" routerLinkActive="active" *ngIf="menu.url">{{ menu.label }}</a>
+          <span *ngIf="!menu.url" class="menu-title">{{ menu.label }}</span>
+          
+          <ul *ngIf="menu.children && menu.children.length > 0" class="submenu">
+            <li *ngFor="let child of menu.children">
+              <a [routerLink]="child.url" routerLinkActive="active">{{ child.label }}</a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+    <header class="topbar">
+      <div class="user-info" *ngIf="authService.session() as session">
+        <span>Hola, {{ session.username }}</span>
+        <button (click)="logout()">Cerrar Sesión</button>
+      </div>
+    </header>
+    
+    <div class="content-area">
+      <router-outlet></router-outlet>
+    </div>
+  </main>
+</div>

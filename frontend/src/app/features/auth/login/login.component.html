@@ -1,0 +1,38 @@
+<div class="login-container">
+  <div class="login-box">
+    <h2>Bienvenido a Cafetería</h2>
+    <p>Ingresa tus credenciales para continuar</p>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      
+      <div class="form-group">
+        <label for="username">Usuario</label>
+        <input 
+          type="text" 
+          id="username" 
+          formControlName="username" 
+          placeholder="Ej: superadmin"
+        >
+      </div>
+
+      <div class="form-group">
+        <label for="password">Contraseña</label>
+        <input 
+          type="password" 
+          id="password" 
+          formControlName="password" 
+          placeholder="Ej: superadmin"
+        >
+      </div>
+
+      <div class="error-message" *ngIf="errorMsg()">
+        {{ errorMsg() }}
+      </div>
+
+      <button type="submit" [disabled]="loginForm.invalid || loading()">
+        {{ loading() ? 'Iniciando...' : 'Iniciar Sesión' }}
+      </button>
+
+    </form>
+  </div>
+</div>
