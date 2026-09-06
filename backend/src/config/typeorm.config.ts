@@ -17,4 +17,7 @@ export const AppDataSource = new DataSource({
   migrations: [join(__dirname, '..').replace(/\\/g, '/') + '/migrations/*{.ts,.js}'],
   synchronize: false, // Las migraciones manejarán la BD
   logging: true,
+  extra: {
+    client_encoding: 'UTF8',
+  }
 });

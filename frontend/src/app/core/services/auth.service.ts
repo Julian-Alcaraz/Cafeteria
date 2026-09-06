@@ -1,4 +1,4 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, signal, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { tap } from 'rxjs/operators';
@@ -25,8 +25,11 @@ export class AuthService {
   
   // Usamos Signals para manejar el estado reactivo global
   session = signal<UserSession | null>(null);
+  
+  private http = inject(HttpClient);
+  private router = inject(Router);
 
-  constructor(private http: HttpClient, private router: Router) {
+  constructor() {
     this.loadSession();
   }
 
@@ -65,7 +68,18 @@ export class AuthService {
   }
 
   private decodeAndSetSession(token: string) {
-    const payloadStr = atob(token.split('.')[1]);
+    const base64Url = token.split('.')[1];
+    // Reemplazar caracteres de Base64Url a Base64 estándar
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const binaryStr = atob(base64);
+    
+    // Convertir de cadena binaria a un array de bytes y decodificar como UTF-8
+    const bytes = new Uint8Array(binaryStr.length);
+    for (let i = 0; i < binaryStr.length; i++) {
+      bytes[i] = binaryStr.charCodeAt(i);
+    }
+    const payloadStr = new TextDecoder('utf-8').decode(bytes);
+    
     const payload = JSON.parse(payloadStr);
     
     this.session.set({

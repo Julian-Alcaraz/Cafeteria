@@ -3,16 +3,19 @@
     <h2>Bienvenido a Cafetería</h2>
     <p>Ingresa tus credenciales para continuar</p>
 
-    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <form (submit)="onSubmit(); $event.preventDefault()">
       
       <div class="form-group">
         <label for="username">Usuario</label>
         <input 
           type="text" 
           id="username" 
-          formControlName="username" 
+          [formField]="loginForm.username" 
           placeholder="Ej: superadmin"
         >
+        @if (loginForm.username().touched() && loginForm.username().errors().length) {
+          <span class="error-text">{{ loginForm.username().errors()[0].message }}</span>
+        }
       </div>
 
       <div class="form-group">
@@ -20,16 +23,19 @@
         <input 
           type="password" 
           id="password" 
-          formControlName="password" 
+          [formField]="loginForm.password" 
           placeholder="Ej: superadmin"
         >
+        @if (loginForm.password().touched() && loginForm.password().errors().length) {
+          <span class="error-text">{{ loginForm.password().errors()[0].message }}</span>
+        }
       </div>
 
       <div class="error-message" *ngIf="errorMsg()">
         {{ errorMsg() }}
       </div>
 
-      <button type="submit" [disabled]="loginForm.invalid || loading()">
+      <button type="submit" [disabled]="loginForm().invalid() || loading()">
         {{ loading() ? 'Iniciando...' : 'Iniciar Sesión' }}
       </button>
 

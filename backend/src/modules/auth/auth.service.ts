@@ -61,9 +61,9 @@ export class AuthService {
     };
   }
 
-  private buildMenuTree(menus: Menu[]): any[] {
-    const map = new Map();
-    const roots: any[] = [];
+  private buildMenuTree(menus: Menu[]): Menu[] {
+    const map = new Map<number, Menu>();
+    const roots: Menu[] = [];
 
     menus.forEach(menu => {
       map.set(menu.id, { ...menu, children: [] });
@@ -71,11 +71,16 @@ export class AuthService {
 
     menus.forEach(menu => {
       if (menu.parent_id) {
-        if (map.has(menu.parent_id)) {
-          map.get(menu.parent_id).children.push(map.get(menu.id));
+        const parent = map.get(menu.parent_id);
+        const child = map.get(menu.id);
+        if (parent && child) {
+          parent.children.push(child);
         }
       } else {
-        roots.push(map.get(menu.id));
+        const rootNode = map.get(menu.id);
+        if (rootNode) {
+          roots.push(rootNode);
+        }
       }
     });
 

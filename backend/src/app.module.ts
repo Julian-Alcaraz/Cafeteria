@@ -20,6 +20,9 @@ import { PermissionsModule } from './modules/permissions/permissions.module.js';
         autoLoadEntities: true,
         synchronize: false,
         logging: process.env.NODE_ENV !== 'production',
+        extra: {
+          client_encoding: 'UTF8',
+        }
       }),
     }),
     AuthModule,

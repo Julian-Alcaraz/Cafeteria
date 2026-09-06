@@ -1,5 +1,9 @@
 # Backend (NestJS) Rules
 
+## Agent Skills and Rules
+- **Mandatory Skills Activation**: Whenever you work on code inside this backend directory, you MUST review and follow the skills available in `backend/.agents/skills/` (such as `nestjs-best-practices`).
+- **Read Skills First**: Before making architectural changes or writing new features, ensure you have read the relevant `SKILL.md` files located in the `.agents/skills` folder to apply the correct guidelines.
+
 ## Clean Code
 - **Dependency Injection**: Always use NestJS dependency injection.
 - **Controllers**: Keep controllers small and focused only on routing and handling HTTP requests/responses. Delegate all business logic to Services.
