@@ -1,44 +1,68 @@
-<div class="login-container">
-  <div class="login-box">
-    <h2>Bienvenido a Cafetería</h2>
-    <p>Ingresa tus credenciales para continuar</p>
+<div class="login-wrapper">
+  <div class="login-branding">
+    <h1>GESTIÓN DE<br>CAFETERÍA</h1>
+    <p class="subtitle">Acceso Centralizado para tu Equipo.</p>
+    <div class="branding-icon">
+      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M2 10H18C18 10 18 17.5 10 17.5C2 17.5 2 10 2 10Z" stroke="var(--text-title)" stroke-width="2" fill="var(--color-primary)"/>
+        <path d="M18 11.5H20.5C21.3284 11.5 22 12.1716 22 13V13.5C22 14.8807 20.8807 16 19.5 16H17" stroke="var(--text-title)" stroke-width="2" stroke-linecap="round"/>
+        <path d="M6 3V6M10 2V6M14 3V6" stroke="var(--color-primary)" stroke-width="2" stroke-linecap="round"/>
+        <path d="M2 10L10 17.5L18 10" stroke="var(--text-title)" stroke-width="2" fill="transparent"/>
+      </svg>
+    </div>
+  </div>
 
-    <form (submit)="onSubmit(); $event.preventDefault()">
-      
-      <div class="form-group">
-        <label for="username">Usuario</label>
-        <input 
-          type="text" 
-          id="username" 
-          [formField]="loginForm.username" 
-          placeholder="Ej: superadmin"
-        >
-        @if (loginForm.username().touched() && loginForm.username().errors().length) {
-          <span class="error-text">{{ loginForm.username().errors()[0].message }}</span>
-        }
+  <div class="login-container">
+    <div class="login-box">
+      <div class="form-header">
+        <div class="icon">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M2 12H18C18 12 18 19.5 10 19.5C2 19.5 2 12 2 12Z" stroke="var(--text-title)" stroke-width="2"/>
+            <path d="M18 13.5H20.5C21.3284 13.5 22 14.1716 22 15V15.5C22 16.8807 20.8807 18 19.5 18H17" stroke="var(--text-title)" stroke-width="2" stroke-linecap="round"/>
+            <path d="M6 5V8M10 4V8M14 5V8" stroke="var(--text-title)" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <h2>Bienvenido a<br>Cafetería Admin</h2>
+        <p>Ingresa tus credenciales para continuar</p>
       </div>
 
-      <div class="form-group">
-        <label for="password">Contraseña</label>
-        <input 
-          type="password" 
-          id="password" 
-          [formField]="loginForm.password" 
-          placeholder="Ej: superadmin"
-        >
-        @if (loginForm.password().touched() && loginForm.password().errors().length) {
-          <span class="error-text">{{ loginForm.password().errors()[0].message }}</span>
-        }
-      </div>
+      <form (submit)="onSubmit(); $event.preventDefault()">
+        
+        <div class="form-group">
+          <label for="username">Usuario</label>
+          <input 
+            type="text" 
+            id="username" 
+            [formField]="loginForm.username" 
+            placeholder="superadmin"
+          >
+          @if (loginForm.username().touched() && loginForm.username().errors().length) {
+            <span class="error-text">{{ loginForm.username().errors()[0].message }}</span>
+          }
+        </div>
 
-      <div class="error-message" *ngIf="errorMsg()">
-        {{ errorMsg() }}
-      </div>
+        <div class="form-group">
+          <label for="password">Contraseña</label>
+          <input 
+            type="password" 
+            id="password" 
+            [formField]="loginForm.password" 
+            placeholder="••••••••"
+          >
+          @if (loginForm.password().touched() && loginForm.password().errors().length) {
+            <span class="error-text">{{ loginForm.password().errors()[0].message }}</span>
+          }
+        </div>
 
-      <button type="submit" [disabled]="loginForm().invalid() || loading()">
-        {{ loading() ? 'Iniciando...' : 'Iniciar Sesión' }}
-      </button>
+        <div class="error-message" *ngIf="errorMsg()">
+          {{ errorMsg() }}
+        </div>
 
-    </form>
+        <button type="submit" [disabled]="loginForm().invalid() || loading()">
+          {{ loading() ? 'Iniciando...' : 'Iniciar Sesión' }}
+        </button>
+
+      </form>
+    </div>
   </div>
 </div>
