@@ -25,6 +25,7 @@ export class LoginComponent {
 
   errorMsg = signal('');
   loading = signal(false);
+  showPassword = signal(false);
 
   onSubmit() {
     submit(this.loginForm, async () => {

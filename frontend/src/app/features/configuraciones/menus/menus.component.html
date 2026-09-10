@@ -1,0 +1,35 @@
+<div class="container">
+  <div class="header-actions">
+    <h2>Gestión de Menús</h2>
+    <button class="btn btn-primary" (click)="openForm()">Nuevo Menú</button>
+  </div>
+
+  <app-menus-table
+    [menus]="menus()"
+    (edit)="openForm($event)"
+    (delete)="deleteMenu($event)"
+  ></app-menus-table>
+
+  @if (showForm()) {
+    <app-menu-form
+      [menu]="editingMenu()"
+      [parentMenus]="parentMenus()"
+      [permisos]="permisos()"
+      (save)="saveMenu($event)"
+      (cancel)="closeForm()"
+    ></app-menu-form>
+  }
+
+  @if (menuToDelete() !== null) {
+    <app-confirm-modal
+      title="Confirmar Eliminación"
+      message="¿Estás seguro de que deseas eliminar este menú? Esta acción no se puede deshacer."
+      confirmText="Eliminar"
+      cancelText="Cancelar"
+      btnType="danger"
+      (confirm)="confirmDeleteMenu()"
+      (cancel)="menuToDelete.set(null)"
+    ></app-confirm-modal>
+  }
+</div>
+

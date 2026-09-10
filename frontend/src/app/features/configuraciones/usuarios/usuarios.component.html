@@ -1,0 +1,43 @@
+<div class="container">
+  <div class="header-actions">
+    <h2>Gestión de Usuarios</h2>
+    <button class="btn btn-primary" (click)="openForm()">Nuevo Usuario</button>
+  </div>
+
+  <app-usuarios-table
+    [usuarios]="usuarios()"
+    (edit)="openForm($event)"
+    (managePermissions)="openPermissions($event)"
+    (delete)="deleteUser($event)"
+  ></app-usuarios-table>
+
+  @if (showForm()) {
+    <app-usuario-form
+      [user]="editingUser()"
+      (save)="saveUser($event)"
+      (cancel)="closeModals()"
+    ></app-usuario-form>
+  }
+
+  @if (showPermissionsForm() && selectedUser()) {
+    <app-usuario-permisos
+      [user]="selectedUser()!"
+      [menus]="availableMenus()"
+      (save)="savePermissions($event)"
+      (cancel)="closeModals()"
+    ></app-usuario-permisos>
+  }
+
+  @if (userToDelete() !== null) {
+    <app-confirm-modal
+      title="Confirmar Eliminación"
+      message="¿Estás seguro de que deseas eliminar este usuario? Esta acción no se puede deshacer."
+      confirmText="Eliminar"
+      cancelText="Cancelar"
+      btnType="danger"
+      (confirm)="confirmDeleteUser()"
+      (cancel)="userToDelete.set(null)"
+    ></app-confirm-modal>
+  }
+</div>
+

@@ -79,3 +79,15 @@
     </button>
   </div>
 </aside>
+
+@if (showLogoutConfirm()) {
+  <app-confirm-modal
+    title="Cerrar Sesión"
+    message="¿Estás seguro de que deseas cerrar tu sesión actual?"
+    confirmText="Cerrar Sesión"
+    cancelText="Cancelar"
+    btnType="danger"
+    (confirm)="confirmLogout()"
+    (cancel)="showLogoutConfirm.set(false)"
+  ></app-confirm-modal>
+}

@@ -114,7 +114,7 @@
   color: #999;
 }
 
-button {
+button[type="submit"] {
   width: 100%;
   padding: 1rem;
   background-color: var(--color-primary);
@@ -128,11 +128,11 @@ button {
   margin-top: 1rem;
 }
 
-button:hover:not(:disabled) {
+button[type="submit"]:hover:not(:disabled) {
   background-color: var(--color-primary-hover);
 }
 
-button:disabled {
+button[type="submit"]:disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }
