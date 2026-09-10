@@ -74,3 +74,22 @@
     display: none;
   }
 }
+
+/* Mobile adjustments */
+@media (max-width: 640px) {
+  .topbar {
+    padding: 0 1rem; /* Reduce padding on small screens */
+  }
+
+  .topbar-left {
+    gap: 0.75rem; /* Reduce gap between menu icon and title */
+  }
+
+  .brand-title {
+    font-size: 1.3rem; /* Make title slightly smaller */
+  }
+
+  .user-details {
+    display: none; /* Hide the text to save space, keeping only the avatar */
+  }
+}

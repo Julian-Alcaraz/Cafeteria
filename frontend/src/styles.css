@@ -269,3 +269,26 @@ input[type="checkbox"]:focus {
   gap: 1rem;
   margin-top: 2rem;
 }
+
+/* Responsive Tables */
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Make tables consume full width within the wrapper */
+.table-responsive table {
+  width: 100%;
+  min-width: 600px; /* Minimum width before scrolling triggers */
+}
+
+/* Header actions wrap for mobile */
+.header-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
