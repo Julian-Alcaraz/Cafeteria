@@ -1,10 +1,9 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable } from 'typeorm';
+import { Entity, Column, ManyToMany, JoinTable } from 'typeorm';
 import { Permission } from '../../permissions/entities/permission.entity.js';
+import { BaseEntity } from '../../../common/entities/base.entity.js';
 
 @Entity('users')
-export class User {
-  @PrimaryGeneratedColumn()
-  id: number;
+export class User extends BaseEntity {
 
   @Column({ unique: true })
   username: string;

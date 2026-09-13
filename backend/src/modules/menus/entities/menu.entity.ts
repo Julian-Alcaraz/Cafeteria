@@ -1,10 +1,9 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
+import { Entity, Column, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
 import { Permission } from '../../permissions/entities/permission.entity.js';
+import { BaseEntity } from '../../../common/entities/base.entity.js';
 
 @Entity('menus')
-export class Menu {
-  @PrimaryGeneratedColumn()
-  id: number;
+export class Menu extends BaseEntity {
 
   @Column()
   label: string;
