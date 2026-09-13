@@ -14,6 +14,7 @@
   @if (showForm()) {
     <app-usuario-form
       [user]="editingUser()"
+      [isSaving]="isSaving()"
       (save)="saveUser($event)"
       (cancel)="closeModals()"
     ></app-usuario-form>
@@ -23,6 +24,7 @@
     <app-usuario-permisos
       [user]="selectedUser()!"
       [menus]="availableMenus()"
+      [isSaving]="isSaving()"
       (save)="savePermissions($event)"
       (cancel)="closeModals()"
     ></app-usuario-permisos>

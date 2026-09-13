@@ -12,6 +12,19 @@ export class User {
   @Column()
   password_hash: string;
 
+  @Column({ nullable: true })
+  email: string;
+
+  @Column({ nullable: true })
+  telefono: string;
+
+  @Column({ nullable: true })
+  nombre: string;
+
+  @Column({ nullable: true })
+  apellido: string;
+
+
   @ManyToMany(() => Permission, { eager: true })
   @JoinTable({
     name: 'user_permissions',

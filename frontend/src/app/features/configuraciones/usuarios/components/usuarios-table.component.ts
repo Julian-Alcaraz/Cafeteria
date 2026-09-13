@@ -13,6 +13,9 @@ import { User } from '../usuarios.service';
           <tr>
             <th>ID</th>
             <th>Usuario</th>
+            <th>Nombre Completo</th>
+            <th>Email</th>
+            <th>Teléfono</th>
             <th>Acciones</th>
           </tr>
         </thead>
@@ -21,6 +24,9 @@ import { User } from '../usuarios.service';
             <tr>
               <td>{{ user.id }}</td>
               <td>{{ user.username }}</td>
+              <td>{{ user.nombre }} {{ user.apellido }}</td>
+              <td>{{ user.email }}</td>
+              <td>{{ user.telefono }}</td>
               <td>
                 <button class="btn btn-sm" (click)="edit.emit(user)">Editar</button>
                 <button class="btn btn-sm" (click)="managePermissions.emit(user)">Menús / Permisos</button>

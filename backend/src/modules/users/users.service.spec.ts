@@ -48,8 +48,8 @@ describe('UsersService', () => {
 
   describe('create', () => {
     it('should create a user and hash password', async () => {
-      const dto = { username: 'test2', password_hash: 'plain', permissionIds: [1] };
-      const expectedCreate = { username: 'test2', password_hash: 'new_hashed_pw', permissions: [{ id: 1 }] };
+      const dto = { username: 'test2', password_hash: 'plain', email: 'test@cafe.com', telefono: '123', nombre: 'Test', apellido: 'User', permissionIds: [1] };
+      const expectedCreate = { username: 'test2', password_hash: 'new_hashed_pw', email: 'test@cafe.com', telefono: '123', nombre: 'Test', apellido: 'User', permissions: [{ id: 1 }] };
       
       const result = await service.create(dto);
       
@@ -81,8 +81,8 @@ describe('UsersService', () => {
 
   describe('update', () => {
     it('should update a user and hash new password', async () => {
-      const dto = { password_hash: 'newplain', permissionIds: [2] };
-      const updateData = { password_hash: 'new_hashed_pw', permissions: [{ id: 2 }] };
+      const dto = { password_hash: 'newplain', email: 'updated@cafe.com', permissionIds: [2] };
+      const updateData = { password_hash: 'new_hashed_pw', email: 'updated@cafe.com', permissions: [{ id: 2 }] };
       const updatedEntity = { ...mockUser, ...updateData };
       vi.spyOn(repo, 'save').mockResolvedValueOnce(updatedEntity as any);
       

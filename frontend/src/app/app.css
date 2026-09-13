@@ -1,0 +1,149 @@
+/* === PRIME NG TOAST CUSTOMIZATION === */
+::ng-deep .p-toast {
+  position: fixed;
+  z-index: 10000;
+  width: 25rem;
+  max-width: 90vw;
+  /* Reset top/bottom to prevent default flow positioning */
+  top: auto;
+  bottom: auto;
+  left: auto;
+  right: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+::ng-deep p-toast-item {
+  display: block !important;
+  width: 100% !important;
+  position: relative !important;
+  transform: none !important;
+}
+
+/* Desktop: Bottom Right */
+@media screen and (min-width: 768px) {
+  ::ng-deep .p-toast.p-toast-bottom-right {
+    bottom: 20px;
+    right: 20px;
+  }
+}
+
+/* Mobile: Bottom Center */
+@media screen and (max-width: 767px) {
+  ::ng-deep .p-toast.p-toast-bottom-right,
+  ::ng-deep .p-toast {
+    bottom: 20px;
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+  }
+}
+
+::ng-deep .p-toast-message {
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  background-color: var(--bg-surface, #fff);
+  border: 1px solid var(--border-subtle, #ddd);
+  overflow: hidden;
+  width: 100%;
+  display: flex !important;
+  flex-direction: column;
+  position: relative !important;
+  transform: none !important;
+  margin: 0 !important;
+  top: auto !important;
+  bottom: auto !important;
+  left: auto !important;
+  right: auto !important;
+}
+
+::ng-deep .p-toast-message-content {
+  display: flex;
+  align-items: flex-start;
+  padding: 1rem;
+  gap: 1rem;
+  width: 100%;
+}
+
+::ng-deep .p-toast-message-icon {
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+::ng-deep svg.p-toast-message-icon,
+::ng-deep svg.p-toast-close-icon,
+::ng-deep .p-toast-message-icon svg,
+::ng-deep .p-toast-close-button svg {
+  width: 1.5rem;
+  height: 1.5rem;
+  min-width: 1.5rem;
+  flex-shrink: 0;
+}
+
+::ng-deep .p-toast-message-success {
+  background-color: #E8F5E9;
+  border-left: 6px solid #4CAF50;
+  color: #2E7D32;
+}
+
+::ng-deep .p-toast-message-success .p-toast-message-icon,
+::ng-deep .p-toast-message-success svg.p-toast-message-icon {
+  color: #4CAF50;
+  fill: currentColor;
+}
+
+::ng-deep .p-toast-message-error {
+  background-color: #FFEBEE;
+  border-left: 6px solid #F44336;
+  color: #C62828;
+}
+
+::ng-deep .p-toast-message-error .p-toast-message-icon,
+::ng-deep .p-toast-message-error svg.p-toast-message-icon {
+  color: #F44336;
+  fill: currentColor;
+}
+
+::ng-deep .p-toast-message-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+::ng-deep .p-toast-summary {
+  font-weight: 600;
+  display: block;
+  margin-bottom: 0.25rem;
+  font-family: 'Inter', sans-serif;
+}
+
+::ng-deep .p-toast-detail {
+  font-size: 0.9rem;
+  font-family: 'Inter', sans-serif;
+  word-break: break-word;
+}
+
+::ng-deep .p-toast-close-button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: inherit;
+  opacity: 0.7;
+  padding: 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-left: auto;
+}
+
+::ng-deep .p-toast-close-button:hover {
+  opacity: 1;
+}

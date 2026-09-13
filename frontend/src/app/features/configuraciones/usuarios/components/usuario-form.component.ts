@@ -25,6 +25,26 @@ function passwordMatchValidator(control: AbstractControl): ValidationErrors | nu
           <label>Nombre de Usuario</label>
           <input type="text" formControlName="username">
         </div>
+
+        <div class="form-group">
+          <label>Nombre</label>
+          <input type="text" formControlName="nombre">
+        </div>
+
+        <div class="form-group">
+          <label>Apellido</label>
+          <input type="text" formControlName="apellido">
+        </div>
+
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" formControlName="email">
+        </div>
+
+        <div class="form-group">
+          <label>Teléfono</label>
+          <input type="text" formControlName="telefono">
+        </div>
         
         <div class="form-group">
           <label>Contraseña</label>
@@ -60,8 +80,14 @@ function passwordMatchValidator(control: AbstractControl): ValidationErrors | nu
         }
 
         <ng-container modal-actions>
-          <button type="button" class="btn" (click)="cancel.emit()">Cancelar</button>
-          <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Guardar</button>
+          <button type="button" class="btn" (click)="cancel.emit()" [disabled]="isSaving()">Cancelar</button>
+          <button type="submit" class="btn btn-primary" [disabled]="form.invalid || isSaving()">
+            @if (isSaving()) {
+              <i class="pi pi-spinner pi-spin"></i> Cargando...
+            } @else {
+              Guardar
+            }
+          </button>
         </ng-container>
 
       </app-modal>
@@ -71,6 +97,7 @@ function passwordMatchValidator(control: AbstractControl): ValidationErrors | nu
 })
 export class UsuarioFormComponent {
   user = input<User | null>(null);
+  isSaving = input<boolean>(false);
   
   save = output<any>();
   cancel = output<void>();
@@ -81,6 +108,10 @@ export class UsuarioFormComponent {
   private fb = inject(FormBuilder);
   form = this.fb.group({
     username: ['', Validators.required],
+    email: ['', [Validators.email]],
+    telefono: [''],
+    nombre: [''],
+    apellido: [''],
     password: [''],
     confirmPassword: ['']
   }, { validators: passwordMatchValidator });
@@ -89,7 +120,15 @@ export class UsuarioFormComponent {
     effect(() => {
       const u = this.user();
       if (u) {
-        this.form.patchValue({ username: u.username, password: '', confirmPassword: '' });
+        this.form.patchValue({ 
+          username: u.username, 
+          email: u.email || '',
+          telefono: u.telefono || '',
+          nombre: u.nombre || '',
+          apellido: u.apellido || '',
+          password: '', 
+          confirmPassword: '' 
+        });
         this.form.get('password')?.clearValidators();
         this.form.get('confirmPassword')?.clearValidators();
       } else {

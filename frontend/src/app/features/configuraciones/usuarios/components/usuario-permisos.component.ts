@@ -25,8 +25,14 @@ import { ModalComponent } from '@shared/components/modal.component';
       </div>
 
       <ng-container modal-actions>
-        <button type="button" class="btn" (click)="cancel.emit()">Cerrar</button>
-        <button type="button" class="btn btn-primary" (click)="onSave()">Guardar Permisos</button>
+        <button type="button" class="btn" (click)="cancel.emit()" [disabled]="isSaving()">Cerrar</button>
+        <button type="button" class="btn btn-primary" (click)="onSave()" [disabled]="isSaving()">
+          @if (isSaving()) {
+            <i class="pi pi-spinner pi-spin"></i> Cargando...
+          } @else {
+            Guardar Permisos
+          }
+        </button>
       </ng-container>
     </app-modal>
   `,
@@ -35,6 +41,7 @@ import { ModalComponent } from '@shared/components/modal.component';
 export class UsuarioPermisosComponent {
   user = input.required<User>();
   menus = input.required<Menu[]>(); // Solo los que tienen requiredPermission
+  isSaving = input<boolean>(false);
 
   save = output<number[]>();
   cancel = output<void>();

@@ -12,6 +12,10 @@ export interface Permission {
 export interface User {
   id: number;
   username: string;
+  email?: string;
+  telefono?: string;
+  nombre?: string;
+  apellido?: string;
   permissions: Permission[];
 }
 

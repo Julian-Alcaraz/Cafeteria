@@ -2,6 +2,7 @@ import { Component, OnInit, signal, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UsuariosService, User } from './usuarios.service';
 import { MenusService, Menu } from '../menus/menus.service';
+import { MessageService } from 'primeng/api';
 
 import { UsuariosTableComponent } from './components/usuarios-table.component';
 import { UsuarioFormComponent } from './components/usuario-form.component';
@@ -18,6 +19,7 @@ import { ConfirmModalComponent } from '../../../shared/components/confirm-modal.
 export class UsuariosComponent implements OnInit {
   private usuariosService = inject(UsuariosService);
   private menusService = inject(MenusService);
+  private messageService = inject(MessageService);
 
   usuarios = signal<User[]>([]);
   availableMenus = signal<Menu[]>([]);
@@ -27,6 +29,8 @@ export class UsuariosComponent implements OnInit {
   editingUser = signal<User | null>(null);
   selectedUser = signal<User | null>(null);
   userToDelete = signal<number | null>(null);
+
+  isSaving = signal(false);
 
   ngOnInit() {
     this.loadUsuarios();
@@ -62,21 +66,41 @@ export class UsuariosComponent implements OnInit {
   }
 
   saveUser(formData: any) {
-    const data: any = { username: formData.username };
+    const data: any = { 
+      username: formData.username,
+      email: formData.email || null,
+      telefono: formData.telefono || null,
+      nombre: formData.nombre || null,
+      apellido: formData.apellido || null
+    };
     if (formData.password) data.password_hash = formData.password;
 
     const user = this.editingUser();
-    if (user) {
-      this.usuariosService.updateUsuario(user.id, data).subscribe(() => {
+    this.isSaving.set(true);
+
+    const request$ = user 
+      ? this.usuariosService.updateUsuario(user.id, data) 
+      : this.usuariosService.createUsuario(data);
+
+    request$.subscribe({
+      next: () => {
+        this.messageService.add({ severity: 'success', summary: 'Éxito', detail: user ? 'Usuario actualizado' : 'Usuario creado' });
         this.loadUsuarios();
         this.closeModals();
-      });
-    } else {
-      this.usuariosService.createUsuario(data).subscribe(() => {
-        this.loadUsuarios();
-        this.closeModals();
-      });
-    }
+        this.isSaving.set(false);
+        
+        setTimeout(() => {
+          const toast = document.querySelector('p-toast');
+          if (toast) {
+            console.log("TOAST DOM:", toast.outerHTML);
+          }
+        }, 500);
+      },
+      error: (err) => {
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Ocurrió un error al guardar el usuario' });
+        this.isSaving.set(false);
+      }
+    });
   }
 
   deleteUser(id: number) {
@@ -86,9 +110,15 @@ export class UsuariosComponent implements OnInit {
   confirmDeleteUser() {
     const id = this.userToDelete();
     if (id !== null) {
-      this.usuariosService.deleteUsuario(id).subscribe(() => {
-        this.loadUsuarios();
-        this.userToDelete.set(null);
+      this.usuariosService.deleteUsuario(id).subscribe({
+        next: () => {
+          this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Usuario eliminado' });
+          this.loadUsuarios();
+          this.userToDelete.set(null);
+        },
+        error: () => {
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudo eliminar el usuario' });
+        }
       });
     }
   }
@@ -97,9 +127,18 @@ export class UsuariosComponent implements OnInit {
     const user = this.selectedUser();
     if (!user) return;
     
-    this.usuariosService.updateUsuario(user.id, { permissionIds }).subscribe(() => {
-      this.loadUsuarios();
-      this.closeModals();
+    this.isSaving.set(true);
+    this.usuariosService.updateUsuario(user.id, { permissionIds }).subscribe({
+      next: () => {
+        this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Permisos actualizados' });
+        this.loadUsuarios();
+        this.closeModals();
+        this.isSaving.set(false);
+      },
+      error: () => {
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al actualizar permisos' });
+        this.isSaving.set(false);
+      }
     });
   }
 }

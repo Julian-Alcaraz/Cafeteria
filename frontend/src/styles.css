@@ -87,6 +87,26 @@ button {
   font-family: 'Inter', sans-serif;
 }
 
+/* Custom Input styles globally */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"] {
+  background-color: var(--bg-surface);
+  color: var(--text-body);
+  font-family: 'Inter', sans-serif;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+input[type="number"]:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(184, 123, 51, 0.1);
+}
+
 /* Custom Select globally */
 select {
   appearance: none;
