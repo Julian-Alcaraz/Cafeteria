@@ -45,18 +45,20 @@ export class UsersService {
     const user = await this.findOne(id);
     const { permissionIds, password_hash, ...rest } = updateUserDto;
     
-    let updateData: any = { ...rest };
+    // Actualizamos datos básicos
+    Object.assign(user, rest);
 
     if (password_hash) {
-      updateData.password_hash = await bcrypt.hash(password_hash, 10);
+      user.password_hash = await bcrypt.hash(password_hash, 10);
     }
 
+    // Actualizamos la relación ManyToMany de permisos
+    // TypeORM necesita que sobreescribamos completamente el array para que borre los que ya no están.
     if (permissionIds !== undefined) {
-      updateData.permissions = permissionIds.map((permId: number) => ({ id: permId } as any));
+      user.permissions = permissionIds.map((permId: number) => ({ id: permId } as any));
     }
 
-    const updated = this.userRepository.merge(user, updateData);
-    return this.userRepository.save(updated);
+    return this.userRepository.save(user);
   }
 
   async remove(id: number) {

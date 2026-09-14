@@ -40,11 +40,25 @@ export class AuthService {
     
     // Obtener todos los menús
     const allMenus = await this.menuRepository.find({ relations: { requiredPermission: true } });
+    const allMenusMap = new Map(allMenus.map(m => [m.id, m]));
     
-    // Filtrar los menús permitidos
-    const allowedMenus = allMenus.filter(menu => 
-      !menu.requiredPermission || userPermissionIds.includes(menu.requiredPermission.id)
-    );
+    // Filtrar los menús permitidos incluyendo los padres automáticamente
+    const allowedMenusSet = new Set<number>();
+    
+    for (const menu of allMenus) {
+      if (!menu.requiredPermission || userPermissionIds.includes(menu.requiredPermission.id)) {
+        allowedMenusSet.add(menu.id);
+        
+        let currentParentId: number | null = menu.parent_id;
+        while (currentParentId) {
+          allowedMenusSet.add(currentParentId);
+          const parentMenu = allMenusMap.get(currentParentId);
+          currentParentId = parentMenu ? parentMenu.parent_id : null;
+        }
+      }
+    }
+    
+    const allowedMenus = Array.from(allowedMenusSet).map(id => allMenusMap.get(id)!);
 
     // Estructurar los menús (padre -> hijo)
     const menus = this.buildMenuTree(allowedMenus);

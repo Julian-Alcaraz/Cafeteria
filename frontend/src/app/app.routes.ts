@@ -1,19 +1,21 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './core/guards/auth.guard';
 import { permissionGuard } from './core/guards/permission.guard';
+import { guestGuard } from './core/guards/guest.guard';
 import { LayoutComponent } from './features/app-shell/layout/layout.component';
 import { LoginComponent } from './features/auth/login/login.component';
 import { NoAccessComponent } from './features/app-shell/no-access/no-access.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'auth/login', pathMatch: 'full' },
-  { path: 'auth/login', component: LoginComponent },
+  { path: 'auth/login', component: LoginComponent, canActivate: [guestGuard] },
   {
     path: 'app',
     component: LayoutComponent,
     canActivate: [authGuard],
     canActivateChild: [permissionGuard],
     children: [
+      { path: '', component: NoAccessComponent, canActivate: [guestGuard] },
       {
         path: 'no-access',
         component: NoAccessComponent

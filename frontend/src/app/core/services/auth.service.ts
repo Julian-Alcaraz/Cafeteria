@@ -39,10 +39,28 @@ export class AuthService {
         tap(response => {
           if (response.data && response.data.access_token) {
             this.handleToken(response.data.access_token);
-            this.router.navigate(['/app/configuraciones/usuarios']); // TODO: redirect to default menu
+            
+            const firstUrl = this.getFirstAvailableUrl(this.session()?.menus);
+            if (firstUrl) {
+              this.router.navigate([firstUrl]);
+            } else {
+              this.router.navigate(['/app/no-access']);
+            }
           }
         })
       );
+  }
+
+  getFirstAvailableUrl(menus?: MenuNode[]): string | null {
+    if (!menus) return null;
+    for (const menu of menus) {
+      if (menu.children && menu.children.length > 0) {
+        const childUrl = this.getFirstAvailableUrl(menu.children);
+        if (childUrl) return childUrl;
+      }
+      if (menu.url) return menu.url;
+    }
+    return null;
   }
 
   logout() {
