@@ -1,12 +1,17 @@
 import { ExceptionFilter, Catch, ArgumentsHost, HttpException, HttpStatus } from '@nestjs/common';
 import { Request, Response } from 'express';
+import { AuditService } from '../../modules/audit/audit.service.js';
 
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
+  constructor(private readonly auditService?: AuditService) {}
+
   catch(exception: unknown, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
-    const request = ctx.getRequest<Request>();
+    const request = ctx.getRequest<Request & { user?: any }>();
+    const method = request.method;
+    const now = Date.now();
 
     let status = HttpStatus.INTERNAL_SERVER_ERROR;
     let message = 'Internal server error';
@@ -15,7 +20,6 @@ export class AllExceptionsFilter implements ExceptionFilter {
       status = exception.getStatus();
       const exceptionResponse = exception.getResponse();
       
-      // Manejar el caso donde class-validator devuelve un array de mensajes
       if (typeof exceptionResponse === 'object' && exceptionResponse !== null) {
         if ('message' in exceptionResponse) {
            const msg = (exceptionResponse as any).message;
@@ -30,10 +34,26 @@ export class AllExceptionsFilter implements ExceptionFilter {
       message = exception.message;
     }
 
-    response.status(status).json({
+    const errorResponse = {
       code: status,
       message: message,
       data: null,
-    });
+    };
+
+    // Auditar error asíncronamente si es modificación
+    if (this.auditService && ['POST', 'PUT', 'PATCH', 'DELETE'].includes(method)) {
+      this.auditService.createLogAsync({
+        userId: request.user?.id || null,
+        method,
+        url: request.url,
+        requestPayload: request.body,
+        responsePayload: errorResponse,
+        statusCode: status,
+        isSuccess: false,
+        executionTimeMs: Date.now() - now, // Approximate if error thrown fast
+      });
+    }
+
+    response.status(status).json(errorResponse);
   }
 }

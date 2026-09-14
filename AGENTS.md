@@ -14,3 +14,6 @@
 - **User Feedback (Toast)**: Every action that requires user feedback MUST use the PrimeNG Toast component (`MessageService`). 
   - On **success**: Display a success toast and, if applicable, close modals and clear forms.
   - On **error**: Display an error/warning toast and DO NOT clear forms or close modals so the user can correct the input or retry.
+
+## Code Quality & Architecture
+- **Use Path Aliases (No Relative Hell)**: Never use long relative paths (e.g., `../../../../../`). Always prefer using the defined path aliases (like `@shared`, `@core`, `@features`, `@environments`, `@modules`, etc.) from the respective `tsconfig.json`. If a logical alias does not exist for a newly created top-level folder, create it and use it.

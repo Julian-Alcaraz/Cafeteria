@@ -1,10 +1,16 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe, UseGuards } from '@nestjs/common';
+import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { MenusService } from './menus.service.js';
 import { CreateMenuDto } from './dto/create-menu.dto.js';
 import { UpdateMenuDto } from './dto/update-menu.dto.js';
+import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard.js';
+import { PermissionsGuard } from '../../common/guards/permissions.guard.js';
+import { RequirePermissions } from '../../common/guards/permissions.decorator.js';
 
 @ApiTags('menus')
+@ApiBearerAuth()
+@UseGuards(JwtAuthGuard, PermissionsGuard)
+@RequirePermissions('access_menus_crud')
 @Controller('menus')
 export class MenusController {
   constructor(private readonly menusService: MenusService) {}

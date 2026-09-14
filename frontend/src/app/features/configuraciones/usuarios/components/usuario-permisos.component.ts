@@ -1,7 +1,7 @@
-import { Component, input, output, effect } from '@angular/core';
+import { Component, input, output, effect, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { User } from '../usuarios.service';
-import { Menu } from '../../menus/menus.service';
+import { Menu } from '@features/configuraciones/menus/menus.service';
 import { ModalComponent } from '@shared/components/modal.component';
 
 @Component({
@@ -13,14 +13,23 @@ import { ModalComponent } from '@shared/components/modal.component';
       <p>Selecciona los menús a los que este usuario tendrá acceso:</p>
       
       <div class="menu-list">
-        @for (menu of menus(); track menu.id) {
-          <div class="menu-item">
+        <ng-template #menuNode let-node="node" let-level="level">
+          <div class="menu-item" [style.marginLeft.px]="level * 24" [style.marginBottom.px]="level === 0 ? 8 : 4">
             <input type="checkbox" 
-                   [id]="'menu-'+menu.id" 
-                   [checked]="selectedIds.has(menu.requiredPermission!.id)"
-                   (change)="toggleMenu(menu, $event)">
-            <label [for]="'menu-'+menu.id">{{ menu.label }}</label>
+                   [id]="'menu-'+node.id" 
+                   [checked]="selectedIds.has(node.requiredPermission!.id)"
+                   (change)="toggleMenu(node, $event)">
+            <label [for]="'menu-'+node.id" [style.fontWeight]="level === 0 && node._children.length > 0 ? '600' : 'normal'">
+              {{ node.label }}
+            </label>
           </div>
+          @for (child of node._children; track child.id) {
+            <ng-container *ngTemplateOutlet="menuNode; context: { node: child, level: level + 1 }"></ng-container>
+          }
+        </ng-template>
+
+        @for (root of menuHierarchy(); track root.id) {
+          <ng-container *ngTemplateOutlet="menuNode; context: { node: root, level: 0 }"></ng-container>
         }
       </div>
 
@@ -48,6 +57,24 @@ export class UsuarioPermisosComponent {
 
   selectedIds = new Set<number>();
 
+  menuHierarchy = computed(() => {
+    const allMenus = this.menus();
+    const menuMap = new Map<number, any>();
+    allMenus.forEach(m => menuMap.set(m.id, { ...m, _children: [] }));
+    
+    const roots: any[] = [];
+    
+    menuMap.forEach(m => {
+      if (m.parent_id && menuMap.has(m.parent_id)) {
+        menuMap.get(m.parent_id)._children.push(m);
+      } else {
+        roots.push(m);
+      }
+    });
+    
+    return roots;
+  });
+
   constructor() {
     effect(() => {
       const u = this.user();
@@ -58,12 +85,24 @@ export class UsuarioPermisosComponent {
     });
   }
 
-  toggleMenu(menu: Menu, event: any) {
-    if (!menu.requiredPermission) return;
-    if (event.target.checked) {
-      this.selectedIds.add(menu.requiredPermission.id);
-    } else {
-      this.selectedIds.delete(menu.requiredPermission.id);
+  toggleMenu(node: any, event: any) {
+    const checked = event.target.checked;
+    this.setMenuSelection(node, checked);
+  }
+
+  setMenuSelection(node: any, checked: boolean) {
+    if (node.requiredPermission) {
+      if (checked) {
+        this.selectedIds.add(node.requiredPermission.id);
+      } else {
+        this.selectedIds.delete(node.requiredPermission.id);
+      }
+    }
+    
+    if (node._children && node._children.length > 0) {
+      node._children.forEach((child: any) => {
+        this.setMenuSelection(child, checked);
+      });
     }
   }
 

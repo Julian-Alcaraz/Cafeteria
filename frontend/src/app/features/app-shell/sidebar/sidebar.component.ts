@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, Output, inject, signal } from '@angular
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { AuthService } from '@core/services/auth.service';
-import { ConfirmModalComponent } from '../../../shared/components/confirm-modal.component';
+import { ConfirmModalComponent } from '@shared/components/confirm-modal.component';
 
 @Component({
   selector: 'app-sidebar',
@@ -24,6 +24,12 @@ export class SidebarComponent {
     event.preventDefault();
     event.stopPropagation();
     this.expandedMenus[menuId] = !this.expandedMenus[menuId];
+  }
+
+  normalizeUrl(url: string | undefined): string {
+    if (!url) return '';
+    if (url.startsWith('/app')) return url;
+    return url.startsWith('/') ? '/app' + url : '/app/' + url;
   }
 
   logout() {

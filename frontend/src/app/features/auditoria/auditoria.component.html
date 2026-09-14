@@ -1,0 +1,86 @@
+<div class="container">
+  <h2>Auditoría del Sistema</h2>
+  
+  <div class="filters-container">
+    <div class="filter-group">
+      <label for="methodFilter">Método HTTP</label>
+      <select id="methodFilter" class="form-control" [(ngModel)]="selectedMethod" (change)="onFilterChange()">
+        @for (m of methods; track m.value) {
+          <option [value]="m.value">{{ m.label }}</option>
+        }
+      </select>
+    </div>
+    
+    <div class="filter-group">
+      <label for="statusFilter">Estado</label>
+      <select id="statusFilter" class="form-control" [(ngModel)]="selectedStatus" (change)="onFilterChange()">
+        @for (s of statuses; track s.value) {
+          <option [value]="s.value">{{ s.label }}</option>
+        }
+      </select>
+    </div>
+
+    <div class="filter-actions">
+      <button class="btn btn-primary" (click)="onFilterChange()">
+        ⟳ Recargar
+      </button>
+    </div>
+  </div>
+
+  <div class="table-responsive">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Fecha</th>
+          <th>Usuario ID</th>
+          <th>Método</th>
+          <th>Ruta</th>
+          <th>Status</th>
+          <th>Tiempo</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (log of logs; track log.id) {
+          <tr>
+            <td>{{ log.id }}</td>
+            <td>{{ log.createdAt | date:'short' }}</td>
+            <td>{{ log.userId || 'Sistema' }}</td>
+            <td>
+              <span class="badge" 
+                    [class.badge-success]="log.method === 'POST'"
+                    [class.badge-danger]="log.method === 'DELETE'"
+                    [class.badge-info]="log.method === 'GET' || log.method === 'PUT' || log.method === 'PATCH'">
+                {{ log.method }}
+              </span>
+            </td>
+            <td class="truncate" [title]="log.url">{{ log.url }}</td>
+            <td>
+              <span class="badge" [class.badge-success]="log.isSuccess" [class.badge-danger]="!log.isSuccess">
+                {{ log.statusCode }}
+              </span>
+            </td>
+            <td>{{ log.executionTimeMs }} ms</td>
+          </tr>
+        }
+        @if (!loading && logs.length === 0) {
+          <tr>
+            <td colspan="7" style="text-align: center;">No se encontraron registros de auditoría.</td>
+          </tr>
+        }
+        @if (loading) {
+          <tr>
+            <td colspan="7" style="text-align: center;">Cargando...</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Paginación -->
+  <div class="pagination">
+    <button class="btn btn-sm" [disabled]="currentPage === 1" (click)="prevPage()">Anterior</button>
+    <span>Página {{ currentPage }} de {{ totalPages }}</span>
+    <button class="btn btn-sm" [disabled]="currentPage === totalPages" (click)="nextPage()">Siguiente</button>
+  </div>
+</div>

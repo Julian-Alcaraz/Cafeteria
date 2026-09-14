@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, Global } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -14,10 +14,11 @@ import * as path from 'path';
 const privateKey = fs.readFileSync(path.join(process.cwd(), 'keys/jwtRS256.key'), 'utf8');
 const publicKey = fs.readFileSync(path.join(process.cwd(), 'keys/jwtRS256.key.pub'), 'utf8');
 
+@Global()
 @Module({
   imports: [
     TypeOrmModule.forFeature([User, Menu, Permission]),
-    PassportModule,
+    PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.register({
       privateKey: privateKey,
       publicKey: publicKey,
@@ -26,6 +27,6 @@ const publicKey = fs.readFileSync(path.join(process.cwd(), 'keys/jwtRS256.key.pu
   ],
   controllers: [AuthController],
   providers: [AuthService, JwtStrategy],
-  exports: [AuthService],
+  exports: [AuthService, PassportModule],
 })
 export class AuthModule {}

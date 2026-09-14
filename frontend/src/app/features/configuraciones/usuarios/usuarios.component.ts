@@ -1,13 +1,13 @@
 import { Component, OnInit, signal, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UsuariosService, User } from './usuarios.service';
-import { MenusService, Menu } from '../menus/menus.service';
-import { MessageService } from 'primeng/api';
+import { MenusService, Menu } from '@features/configuraciones/menus/menus.service';
+import { ToastService } from '@shared/components/toast/toast.service';
 
 import { UsuariosTableComponent } from './components/usuarios-table.component';
 import { UsuarioFormComponent } from './components/usuario-form.component';
 import { UsuarioPermisosComponent } from './components/usuario-permisos.component';
-import { ConfirmModalComponent } from '../../../shared/components/confirm-modal.component';
+import { ConfirmModalComponent } from '@shared/components/confirm-modal.component';
 
 @Component({
   selector: 'app-usuarios',
@@ -19,7 +19,7 @@ import { ConfirmModalComponent } from '../../../shared/components/confirm-modal.
 export class UsuariosComponent implements OnInit {
   private usuariosService = inject(UsuariosService);
   private menusService = inject(MenusService);
-  private messageService = inject(MessageService);
+  private toastService = inject(ToastService);
 
   usuarios = signal<User[]>([]);
   availableMenus = signal<Menu[]>([]);
@@ -84,7 +84,7 @@ export class UsuariosComponent implements OnInit {
 
     request$.subscribe({
       next: () => {
-        this.messageService.add({ severity: 'success', summary: 'Éxito', detail: user ? 'Usuario actualizado' : 'Usuario creado' });
+        this.toastService.add({ severity: 'success', summary: 'Éxito', detail: user ? 'Usuario actualizado' : 'Usuario creado' });
         this.loadUsuarios();
         this.closeModals();
         this.isSaving.set(false);
@@ -97,7 +97,7 @@ export class UsuariosComponent implements OnInit {
         }, 500);
       },
       error: (err) => {
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Ocurrió un error al guardar el usuario' });
+        this.toastService.add({ severity: 'error', summary: 'Error', detail: 'Ocurrió un error al guardar el usuario' });
         this.isSaving.set(false);
       }
     });
@@ -112,12 +112,12 @@ export class UsuariosComponent implements OnInit {
     if (id !== null) {
       this.usuariosService.deleteUsuario(id).subscribe({
         next: () => {
-          this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Usuario eliminado' });
+          this.toastService.add({ severity: 'success', summary: 'Éxito', detail: 'Usuario eliminado' });
           this.loadUsuarios();
           this.userToDelete.set(null);
         },
         error: () => {
-          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudo eliminar el usuario' });
+          this.toastService.add({ severity: 'error', summary: 'Error', detail: 'No se pudo eliminar el usuario' });
         }
       });
     }
@@ -130,13 +130,13 @@ export class UsuariosComponent implements OnInit {
     this.isSaving.set(true);
     this.usuariosService.updateUsuario(user.id, { permissionIds }).subscribe({
       next: () => {
-        this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Permisos actualizados' });
+        this.toastService.add({ severity: 'success', summary: 'Éxito', detail: 'Permisos actualizados' });
         this.loadUsuarios();
         this.closeModals();
         this.isSaving.set(false);
       },
       error: () => {
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al actualizar permisos' });
+        this.toastService.add({ severity: 'error', summary: 'Error', detail: 'Error al actualizar permisos' });
         this.isSaving.set(false);
       }
     });

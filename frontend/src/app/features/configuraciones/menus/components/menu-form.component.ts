@@ -1,7 +1,7 @@
 import { Component, input, output, effect, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Permission } from '../../permisos/permisos.service';
+import { Permission } from '@features/configuraciones/permisos/permisos.service';
 import { ModalComponent } from '@shared/components/modal.component';
 
 @Component({
@@ -20,6 +20,11 @@ import { ModalComponent } from '@shared/components/modal.component';
         <div class="form-group">
           <label>URL (opcional)</label>
           <input type="text" formControlName="url">
+        </div>
+
+        <div class="form-group">
+          <label>Ícono (opcional)</label>
+          <input type="text" formControlName="icon" placeholder="Ej: pi pi-home">
         </div>
 
         <div class="form-group">

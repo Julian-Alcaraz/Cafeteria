@@ -46,7 +46,7 @@
           
           <ul class="submenu" [class.expanded]="expandedMenus[menu.id]">
             <li *ngFor="let child of menu.children">
-              <a [routerLink]="child.url" routerLinkActive="active" (click)="close.emit()">
+              <a [routerLink]="normalizeUrl(child.url)" routerLinkActive="active" (click)="close.emit()">
                 <span class="menu-text">{{ child.label }}</span>
               </a>
             </li>
@@ -55,7 +55,7 @@
 
         <!-- Leaf Menu (No Children) -->
         <ng-container *ngIf="!menu.children || menu.children.length === 0">
-          <a *ngIf="menu.url" [routerLink]="menu.url" routerLinkActive="active" (click)="close.emit()">
+          <a *ngIf="menu.url" [routerLink]="normalizeUrl(menu.url)" routerLinkActive="active" (click)="close.emit()">
             <span class="menu-icon">
               <ng-container *ngTemplateOutlet="menuIcon; context: { label: menu.label }"></ng-container>
             </span>

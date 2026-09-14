@@ -23,4 +23,16 @@ export class PermisosService {
   getPermisos() {
     return this.http.get<ApiResponse<Permission[]>>(this.apiUrl).pipe(map(res => res.data));
   }
+
+  createPermiso(data: any) {
+    return this.http.post<ApiResponse<Permission>>(this.apiUrl, data).pipe(map(res => res.data));
+  }
+
+  updatePermiso(id: number, data: any) {
+    return this.http.patch<ApiResponse<Permission>>(`${this.apiUrl}/${id}`, data).pipe(map(res => res.data));
+  }
+
+  deletePermiso(id: number) {
+    return this.http.delete<ApiResponse<any>>(`${this.apiUrl}/${id}`).pipe(map(res => res.data));
+  }
 }
