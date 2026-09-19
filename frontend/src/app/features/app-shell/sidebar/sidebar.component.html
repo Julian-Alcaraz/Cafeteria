@@ -47,6 +47,9 @@
           <ul class="submenu" [class.expanded]="expandedMenus[menu.id]">
             <li *ngFor="let child of menu.children">
               <a [routerLink]="normalizeUrl(child.url)" routerLinkActive="active" (click)="close.emit()">
+                <span class="menu-icon" style="align-items: center; width: 20px; justify-content: center;">
+                  <i [class]="child.icon ? child.icon : 'pi pi-circle-fill'" style="font-size: 1rem;"></i>
+                </span>
                 <span class="menu-text">{{ child.label }}</span>
               </a>
             </li>
