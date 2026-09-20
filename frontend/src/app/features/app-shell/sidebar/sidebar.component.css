@@ -89,7 +89,8 @@
   transition: background-color 0.2s, color 0.2s;
 }
 
-.sidebar-nav li a:hover, .sidebar-nav li a.active {
+.sidebar-nav li a:hover,
+.sidebar-nav li a.active {
   background-color: var(--bg-primary);
   color: var(--text-title);
 }

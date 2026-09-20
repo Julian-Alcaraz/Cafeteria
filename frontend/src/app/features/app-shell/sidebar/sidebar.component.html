@@ -36,7 +36,7 @@
         
         <!-- Parent Menu (Has Children) -->
         <ng-container *ngIf="menu.children && menu.children.length > 0">
-          <a class="menu-parent" (click)="toggleSubmenu(menu.id, $event)" [class.active]="expandedMenus[menu.id]" style="cursor: pointer;">
+          <a class="menu-parent" (click)="toggleSubmenu(menu.id, $event)" [class.active]="isMenuOrChildActive(menu)" style="cursor: pointer;">
             <span class="menu-icon">
               <ng-container *ngTemplateOutlet="menuIcon; context: { label: menu.label, icon: menu.icon }"></ng-container>
             </span>
