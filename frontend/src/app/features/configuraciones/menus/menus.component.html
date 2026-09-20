@@ -7,12 +7,14 @@
   <app-menus-table
     [menus]="menus()"
     (edit)="openForm($event)"
+    (duplicate)="duplicateMenu($event)"
     (delete)="deleteMenu($event)"
   ></app-menus-table>
 
   @if (showForm()) {
     <app-menu-form
       [menu]="editingMenu()"
+      [initialData]="duplicatingMenu()"
       [parentMenus]="parentMenus()"
       [permisos]="permisos()"
       (save)="saveMenu($event)"

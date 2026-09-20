@@ -6,7 +6,7 @@ Se requirió implementar de manera integral el CRUD para las entidades `Usuarios
 ## Decisiones Funcionales
 
 ### 1. CRUD de Menús
-- Se implementó un listado, alta, edición y eliminación de Menús en el frontend.
+- Se implementó un listado, alta, edición, eliminación y **duplicación** de Menús en el frontend. La duplicación permite pre-cargar el formulario con la configuración de un menú existente para agilizar la creación de menús similares.
 - Cada menú puede tener un `parent_id` para crear estructuras de árbol jerárquicas y un `permission_id` que representa el permiso requerido (`requiredPermission`) para que un usuario pueda visualizarlo.
 - Se agregó documentación de Swagger (`@ApiProperty`, `@ApiOperation`, etc.) a los DTOs y Controladores existentes para cumplir con las reglas del backend definidas en `backend/AGENTS.md`.
 

@@ -59,6 +59,7 @@ import { ModalComponent } from '@shared/components/modal.component';
 })
 export class MenuFormComponent {
   menu = input<any | null>(null);
+  initialData = input<any | null>(null);
   parentMenus = input.required<any[]>();
   permisos = input.required<Permission[]>();
   
@@ -77,6 +78,7 @@ export class MenuFormComponent {
   constructor() {
     effect(() => {
       const m = this.menu();
+      const init = this.initialData();
       if (m) {
         this.form.patchValue({
           label: m.label,
@@ -84,6 +86,14 @@ export class MenuFormComponent {
           icon: m.icon,
           parent_id: m.parent?.id || null,
           permission_id: m.requiredPermission?.id || null
+        });
+      } else if (init) {
+        this.form.patchValue({
+          label: init.label + ' (Copia)',
+          url: init.url,
+          icon: init.icon,
+          parent_id: init.parent?.id || null,
+          permission_id: init.requiredPermission?.id || null
         });
       } else {
         this.form.reset({

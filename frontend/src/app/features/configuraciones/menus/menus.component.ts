@@ -27,6 +27,7 @@ export class MenusComponent implements OnInit {
 
   showForm = signal(false);
   editingMenu = signal<any | null>(null);
+  duplicatingMenu = signal<any | null>(null);
   menuToDelete = signal<number | null>(null);
 
   ngOnInit() {
@@ -47,12 +48,20 @@ export class MenusComponent implements OnInit {
 
   openForm(menu?: any) {
     this.editingMenu.set(menu || null);
+    this.duplicatingMenu.set(null);
+    this.showForm.set(true);
+  }
+
+  duplicateMenu(menu: any) {
+    this.editingMenu.set(null);
+    this.duplicatingMenu.set(menu);
     this.showForm.set(true);
   }
 
   closeForm() {
     this.showForm.set(false);
     this.editingMenu.set(null);
+    this.duplicatingMenu.set(null);
     this.menuToDelete.set(null);
   }
 

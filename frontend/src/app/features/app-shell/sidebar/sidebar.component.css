@@ -101,7 +101,8 @@
 }
 
 .menu-title {
-  display: block;
+  display: flex;
+  align-items: center;
   padding: 1rem;
   font-weight: bold;
   color: var(--text-title);
@@ -207,7 +208,6 @@
   /* Hide texts when collapsed completely to avoid scroll */
   .sidebar:not(.open) .brand-text,
   .sidebar:not(.open) .menu-text,
-  .sidebar:not(.open) .menu-title,
   .sidebar:not(.open) .logout-text {
     display: none;
   }
@@ -221,7 +221,8 @@
     margin: 0 auto;
   }
   
-  .sidebar:not(.open) .sidebar-nav li a {
+  .sidebar:not(.open) .sidebar-nav li a,
+  .sidebar:not(.open) .menu-title {
     padding-left: 0;
     padding-right: 0;
     justify-content: center;

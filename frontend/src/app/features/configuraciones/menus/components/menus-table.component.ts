@@ -9,6 +9,7 @@ import { GenericTableComponent, TableColumn } from '@shared/components/generic-t
   template: `
     <app-generic-table [data]="menus()" [columns]="columns">
       <ng-template let-menu>
+        <button class="btn btn-sm mr-2" (click)="duplicate.emit(menu)">Duplicar</button>
         <button class="btn btn-sm mr-2" (click)="edit.emit(menu)">Editar</button>
         <button class="btn btn-danger btn-sm" (click)="delete.emit(menu.id)">Eliminar</button>
       </ng-template>
@@ -20,6 +21,7 @@ export class MenusTableComponent {
   menus = input.required<any[]>();
   
   edit = output<any>();
+  duplicate = output<any>();
   delete = output<number>();
 
   columns: TableColumn[] = [
