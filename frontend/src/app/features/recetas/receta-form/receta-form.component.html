@@ -1,0 +1,171 @@
+<div class="page-container">
+  <div class="header">
+    @if (showBackButton()) {
+      <button class="btn btn-sm btn-secondary back-btn" (click)="goBack()">
+        <i class="pi pi-arrow-left"></i> Volver
+      </button>
+    }
+    <h2>{{ isEditMode() ? 'Editar Receta (Genera nueva versión)' : 'Nueva Receta' }}</h2>
+  </div>
+
+  @if (isLoading()) {
+    <div class="loading-state">
+      <i class="pi pi-spinner pi-spin"></i> Cargando receta...
+    </div>
+  } @else {
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="recipe-form">
+      
+      <!-- SECCIÓN: DATOS GENERALES -->
+      <div class="section card">
+        <h3>Datos Generales</h3>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Producto a elaborar *</label>
+            <select formControlName="productId" class="form-control">
+              <option [ngValue]="null">Seleccionar producto elaborado...</option>
+              @for (p of elaboratedProducts(); track p.id) {
+                <option [ngValue]="p.id">{{ p.name }}</option>
+              }
+            </select>
+            @if (form.controls.productId.invalid && form.controls.productId.touched) {
+              <span class="error-text">El producto a elaborar es requerido.</span>
+            }
+          </div>
+
+          <div class="form-group">
+            <label>Nombre de la Receta *</label>
+            <input type="text" formControlName="name" class="form-control" placeholder="Ej: Latte Clásico" />
+            @if (form.controls.name.invalid && form.controls.name.touched) {
+              <span class="error-text">El nombre de la receta es requerido.</span>
+            }
+          </div>
+
+          <div class="form-group">
+            <label>Rendimiento (Cantidad) *</label>
+            <input type="number" formControlName="yieldQty" class="form-control" min="0.0001" step="any" />
+            @if (form.controls.yieldQty.invalid && form.controls.yieldQty.touched) {
+              <span class="error-text">La cantidad es requerida y debe ser mayor a 0.</span>
+            }
+          </div>
+
+          <div class="form-group">
+            <label>Rendimiento (Unidad) *</label>
+            <select formControlName="yieldUnit" class="form-control">
+              @for (u of units; track u) {
+                <option [ngValue]="u">{{ u }}</option>
+              }
+            </select>
+            @if (form.controls.yieldUnit.invalid && form.controls.yieldUnit.touched) {
+              <span class="error-text">La unidad es requerida.</span>
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- SECCIÓN: INGREDIENTES -->
+      <div class="section card">
+        <div class="section-header">
+          <h3>Ingredientes</h3>
+          <button type="button" class="btn btn-sm btn-secondary" (click)="addIngredient()">
+            <i class="pi pi-plus"></i> Añadir Ingrediente
+          </button>
+        </div>
+
+        <div formArrayName="ingredients" class="ingredients-list">
+          @for (ing of ingredientsFormArray.controls; track $index) {
+            <div [formGroupName]="$index" class="ingredient-row">
+              <div class="ingredient-header">
+                <span class="ingredient-num">#{{ $index + 1 }}</span>
+                <button type="button" class="btn btn-sm btn-danger" (click)="removeIngredient($index)" title="Eliminar">
+                  <i class="pi pi-times"></i>
+                </button>
+              </div>
+              
+              <div class="ingredient-fields">
+                <div class="form-group">
+                  <label>Insumo / Producto *</label>
+                  <select formControlName="productId" class="form-control">
+                    <option [ngValue]="null">Seleccionar...</option>
+                    <optgroup label="Insumos">
+                      @for (p of ingredientProducts(); track p.id) {
+                        <option [ngValue]="p.id">{{ p.name }}</option>
+                      }
+                    </optgroup>
+                    <optgroup label="Café en Grano">
+                      @for (p of coffeeBeanProducts(); track p.id) {
+                        <option [ngValue]="p.id">{{ p.name }}</option>
+                      }
+                    </optgroup>
+                  </select>
+                  @if (ing.get('productId')?.invalid && ing.get('productId')?.touched) {
+                    <span class="error-text">El insumo es requerido.</span>
+                  }
+                </div>
+
+                <div class="form-group qty-unit">
+                  <div class="qty-field">
+                    <label>Cantidad *</label>
+                    <input type="number" formControlName="quantity" class="form-control" min="0.0001" step="any" />
+                    @if (ing.get('quantity')?.invalid && ing.get('quantity')?.touched) {
+                      <span class="error-text">La cantidad es requerida y mayor a 0.</span>
+                    }
+                  </div>
+                  <div class="unit-field">
+                    <label>Unidad *</label>
+                    <select formControlName="unit" class="form-control">
+                      @for (u of units; track u) {
+                        <option [ngValue]="u">{{ u }}</option>
+                      }
+                    </select>
+                    @if (ing.get('unit')?.invalid && ing.get('unit')?.touched) {
+                      <span class="error-text">La unidad es requerida.</span>
+                    }
+                  </div>
+                </div>
+
+                <div class="form-group hopper-toggle">
+                  <label class="checkbox-label">
+                    <input type="checkbox" formControlName="isHopperSlot" (change)="toggleHopperMode($index, ing.get('isHopperSlot')?.value)" />
+                    Es café de tolva dinámica
+                  </label>
+                  @if (ing.get('isHopperSlot')?.value) {
+                    <div class="hopper-slot-input">
+                      <label>N° de Slot *</label>
+                      <input type="number" formControlName="hopperSlotNumber" class="form-control" min="1" max="4" />
+                      @if (ing.get('hopperSlotNumber')?.invalid && ing.get('hopperSlotNumber')?.touched) {
+                        <span class="error-text">El N° de slot es requerido (1-4).</span>
+                      }
+                    </div>
+                  }
+                </div>
+
+                <div class="form-group full-width">
+                  <label>Notas (opcional)</label>
+                  <input type="text" formControlName="notes" class="form-control" placeholder="Ej: Shot doble extraído a 9 bares" />
+                </div>
+              </div>
+            </div>
+          }
+          
+          @if (ingredientsFormArray.length === 0) {
+            <div class="empty-ingredients">
+              No hay ingredientes en esta receta. Haz clic en "Añadir Ingrediente" para comenzar.
+            </div>
+          }
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn" (click)="goBack()">Cancelar</button>
+        <button type="submit" class="btn btn-primary" [disabled]="form.invalid || isSaving()">
+          @if (isSaving()) {
+            <i class="pi pi-spinner pi-spin"></i> Guardando...
+          } @else {
+            <i class="pi pi-save"></i> {{ isEditMode() ? 'Guardar Nueva Versión' : 'Guardar Receta' }}
+          }
+        </button>
+      </div>
+
+    </form>
+  }
+</div>

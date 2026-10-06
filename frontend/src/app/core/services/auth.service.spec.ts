@@ -10,8 +10,17 @@ describe('AuthService', () => {
   let router: any;
 
   beforeEach(() => {
-    router = { navigate: vi.fn() };
+    // Mock de localStorage
+    const store: Record<string, string> = {};
+    vi.stubGlobal('localStorage', {
+      getItem: (key: string) => store[key] || null,
+      setItem: (key: string, value: string) => { store[key] = value.toString(); },
+      removeItem: (key: string) => { delete store[key]; },
+      clear: () => { for (const key in store) delete store[key]; }
+    });
 
+    router = { navigate: vi.fn() };
+    TestBed.resetTestingModule();
     TestBed.configureTestingModule({
       providers: [
         AuthService,

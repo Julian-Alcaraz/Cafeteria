@@ -62,8 +62,9 @@ function checkExactOrBestMatch(menus: MenuNode[], url: string): boolean {
   // Como en esta aplicacion todo (editar, crear) se maneja en modales (misma URL), 
   // el match exacto es perfectamente seguro y funcional.
   
+  // Allow exact matches, or sub-routes (e.g. menu is /app/recetas, allow /app/recetas/nueva)
   for (const menuUrl of flatAllowedMenus) {
-     if (url === menuUrl) return true;
+     if (url === menuUrl || url.startsWith(menuUrl + '/')) return true;
   }
 
   return false;

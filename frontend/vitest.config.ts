@@ -13,6 +13,8 @@ export default defineConfig({
         branches: 80,
         statements: 80
       }
-    }
+    },
+    setupFiles: ['./setup-vitest.ts']
   },
+
 });

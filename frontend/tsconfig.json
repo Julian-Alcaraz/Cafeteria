@@ -17,7 +17,9 @@
       "@environments/*": ["./src/environments/*"],
       "@core/*": ["./src/app/core/*"],
       "@features/*": ["./src/app/features/*"],
-      "@shared/*": ["./src/app/shared/*"]
+      "@shared/*": ["./src/app/shared/*"],
+      "@catalogo/*": ["./src/app/features/catalogo/*"],
+      "@recetas/*": ["./src/app/features/recetas/*"]
     }
   },
   "angularCompilerOptions": {

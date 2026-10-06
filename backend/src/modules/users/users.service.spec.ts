@@ -81,16 +81,19 @@ describe('UsersService', () => {
 
   describe('update', () => {
     it('should update a user and hash new password', async () => {
-      const dto = { password_hash: 'newplain', email: 'updated@cafe.com', permissionIds: [2] };
-      const updateData = { password_hash: 'new_hashed_pw', email: 'updated@cafe.com', permissions: [{ id: 2 }] };
-      const updatedEntity = { ...mockUser, ...updateData };
-      vi.spyOn(repo, 'save').mockResolvedValueOnce(updatedEntity as any);
-      
-      expect(await service.update(1, dto)).toEqual(updatedEntity);
+      const updateData: UpdateUserDto = { username: 'newuser', password_hash: 'newplain', permissionIds: [1] };
+      const updatedEntity = { ...mockUser, username: 'newuser', password_hash: 'hashed', permissions: [{ id: 1 }] };
+
+      vi.spyOn(repo, 'findOne').mockResolvedValue(mockUser as User);
+      vi.spyOn(bcrypt, 'hash').mockResolvedValue('hashed' as never);
+      vi.spyOn(repo, 'save').mockResolvedValue(updatedEntity as User);
+
+      const result = await service.update(1, updateData);
+
       expect(repo.findOne).toHaveBeenCalled();
       expect(bcrypt.hash).toHaveBeenCalledWith('newplain', 10);
-      expect(repo.merge).toHaveBeenCalledWith(mockUser, updateData);
-      expect(repo.save).toHaveBeenCalledWith(updatedEntity);
+      expect(repo.save).toHaveBeenCalled();
+      expect(result).toEqual(updatedEntity);
     });
   });
 

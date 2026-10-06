@@ -1,0 +1,74 @@
+<div class="page-container">
+  <div class="header-actions">
+    <h2>Gestión de Categorías</h2>
+    <button class="btn btn-primary" (click)="openForm()">Nueva Categoría</button>
+  </div>
+
+  <app-generic-table [data]="categorias()" [columns]="columns">
+    <ng-template let-category>
+      <button class="btn btn-sm btn-secondary" (click)="openForm(category)">Editar</button>
+      <button class="btn btn-sm btn-info" (click)="duplicateCategory(category)">Copiar</button>
+      <button class="btn btn-sm btn-danger" (click)="deleteCategoria(category.id)">Deshabilitar</button>
+    </ng-template>
+  </app-generic-table>
+
+  @if (showForm()) {
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <app-modal [title]="editingCategory() && !isCopyMode() ? 'Editar Categoría' : 'Nueva Categoría'">
+        <div class="form-group">
+          <label for="cat-name">Nombre *</label>
+          <input id="cat-name" type="text" formControlName="name" class="form-control"
+            placeholder="Ej: Bebidas Calientes"
+            (input)="autoSlug(form.controls.name.value ?? '')" />
+          @if (form.controls.name.invalid && form.controls.name.touched) {
+            <span class="error-text">El nombre es requerido.</span>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="cat-slug">Slug *</label>
+          <input id="cat-slug" type="text" formControlName="slug" class="form-control"
+            placeholder="Ej: bebidas-calientes" />
+          @if (form.controls.slug.invalid && form.controls.slug.touched) {
+            <span class="error-text">El slug es requerido.</span>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="cat-parent">Categoría Padre</label>
+          <select id="cat-parent" formControlName="parentId" class="form-control">
+            <option [ngValue]="null">Sin categoría padre (raíz)</option>
+            @for (cat of categorias(); track cat.id) {
+              @if (cat.id !== editingCategory()?.id) {
+                <option [ngValue]="cat.id">{{ cat.name }}</option>
+              }
+            }
+          </select>
+        </div>
+
+        <ng-container modal-actions>
+          <button type="button" class="btn" (click)="closeModals()">Cancelar</button>
+          <button type="submit" class="btn btn-primary" [disabled]="form.invalid || isSaving()">
+            @if (isSaving()) {
+              <i class="pi pi-spinner pi-spin"></i> Guardando...
+            } @else {
+              {{ editingCategory() && !isCopyMode() ? 'Actualizar' : 'Crear Categoría' }}
+            }
+          </button>
+        </ng-container>
+      </app-modal>
+    </form>
+  }
+
+  @if (categoryToDelete() !== null) {
+    <app-confirm-modal
+      title="Confirmar deshabilitación"
+      message="¿Deseas deshabilitar esta categoría?"
+      confirmText="Deshabilitar"
+      cancelText="Cancelar"
+      btnType="danger"
+      (confirm)="confirmDeleteCategoria()"
+      (cancel)="categoryToDelete.set(null)"
+    ></app-confirm-modal>
+  }
+</div>

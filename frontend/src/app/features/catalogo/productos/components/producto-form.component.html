@@ -1,0 +1,99 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <app-modal [title]="isEditMode ? 'Editar Producto' : 'Nuevo Producto'">
+    <div class="form-grid">
+
+      <div class="form-group">
+        <label for="name">Nombre *</label>
+        <input id="name" type="text" formControlName="name" class="form-control" placeholder="Ej: Latte" />
+        @if (form.controls.name.invalid && form.controls.name.touched) {
+          <span class="error-text">El nombre es requerido.</span>
+        }
+      </div>
+
+      <div class="form-group">
+        <label for="sku">SKU</label>
+        <input id="sku" type="text" formControlName="sku" class="form-control" placeholder="Ej: LAT-001" />
+      </div>
+
+      <div class="form-group">
+        <label for="productTypeId">Tipo de Producto *</label>
+        <select id="productTypeId" formControlName="productTypeId" class="form-control">
+          <option [ngValue]="null">Seleccionar tipo...</option>
+          @for (type of productTypes(); track type.id) {
+            <option [ngValue]="type.id">{{ type.name }}</option>
+          }
+        </select>
+        @if (form.controls.productTypeId.invalid && form.controls.productTypeId.touched) {
+          <span class="error-text">El tipo de producto es requerido.</span>
+        }
+      </div>
+
+      <div class="form-group">
+        <label for="categoryId">Categoría</label>
+        <select id="categoryId" formControlName="categoryId" class="form-control">
+          <option [ngValue]="null">Sin categoría</option>
+          @for (cat of categories(); track cat.id) {
+            <option [ngValue]="cat.id">{{ cat.name }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="unit">Unidad de medida *</label>
+        <select id="unit" formControlName="unit" class="form-control">
+          @for (u of units; track u) {
+            <option [value]="u">{{ u }}</option>
+          }
+        </select>
+        @if (form.controls.unit.invalid && form.controls.unit.touched) {
+          <span class="error-text">La unidad es requerida.</span>
+        }
+      </div>
+
+      <div class="form-group">
+        <label for="costPrice">Precio de Costo</label>
+        <input id="costPrice" type="number" formControlName="costPrice" class="form-control" min="0" step="0.01" />
+        @if (form.controls.costPrice.invalid && form.controls.costPrice.touched) {
+          <span class="error-text">El costo es requerido y debe ser mayor o igual a 0.</span>
+        }
+      </div>
+
+      <div class="form-group">
+        <label for="salePrice">Precio de Venta</label>
+        <input id="salePrice" type="number" formControlName="salePrice" class="form-control" min="0" step="0.01" />
+        @if (form.controls.salePrice.invalid && form.controls.salePrice.touched) {
+          <span class="error-text">El precio de venta es requerido y debe ser mayor o igual a 0.</span>
+        }
+      </div>
+
+      <div class="form-group full-width">
+        <label for="description">Descripción</label>
+        <textarea id="description" formControlName="description" class="form-control" rows="2"
+          placeholder="Descripción opcional del producto"></textarea>
+      </div>
+
+      <div class="form-group checkboxes">
+        <label class="checkbox-label">
+          <input type="checkbox" formControlName="trackStock" />
+          Controlar stock
+        </label>
+        <label class="checkbox-label">
+          <input type="checkbox" formControlName="isSoldByWeight" />
+          Se vende por peso
+        </label>
+      </div>
+
+    </div>
+
+    <ng-container modal-actions>
+      <button type="button" class="btn" (click)="cancel.emit()">Cancelar</button>
+      <button type="submit" class="btn btn-primary" [disabled]="form.invalid || isSaving()">
+        @if (isSaving()) {
+          <i class="pi pi-spinner pi-spin"></i> Guardando...
+        } @else {
+          {{ isEditMode ? 'Actualizar' : 'Crear Producto' }}
+        }
+      </button>
+    </ng-container>
+  </app-modal>
+</form>

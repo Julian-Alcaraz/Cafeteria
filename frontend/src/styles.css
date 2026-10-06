@@ -137,6 +137,55 @@ body.dark-theme select {
   background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%23D6D3D1%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E");
 }
 
+/* Global Forms & Containers */
+.page-container, .container {
+  padding: 2rem;
+  background-color: var(--bg-surface);
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea,
+.form-control {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--border-subtle);
+  border-radius: 6px;
+  box-sizing: border-box;
+  font-family: inherit;
+  background-color: var(--bg-surface);
+  color: var(--text-body);
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.form-group.full-width {
+  grid-column: 1 / -1;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: normal !important;
+}
+
 /* Custom Checkbox globally */
 input[type="checkbox"] {
   appearance: none;
@@ -272,7 +321,7 @@ input[type="checkbox"]:focus {
   background: var(--bg-surface);
   padding: 2rem;
   border-radius: 12px;
-  width: 400px;
+  width: 460px;
   max-width: 90vw;
   max-height: 90vh;
   overflow-y: auto;
@@ -283,12 +332,6 @@ input[type="checkbox"]:focus {
   margin-bottom: 1rem;
 }
 
-.modal-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 1rem;
-  margin-top: 2rem;
-}
 
 /* Responsive Tables */
 .table-responsive {

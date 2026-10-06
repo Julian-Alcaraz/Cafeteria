@@ -1,0 +1,25 @@
+<div class="page-container">
+  <div class="header-actions">
+    <h2>Recetas</h2>
+    <button class="btn btn-primary" (click)="goToForm()">Nueva Receta</button>
+  </div>
+
+  <app-generic-table [data]="recetas()" [columns]="columns">
+    <ng-template let-recipe>
+      <button class="btn btn-sm btn-secondary" (click)="goToForm(recipe)">Editar</button>
+      <button class="btn btn-sm btn-danger" (click)="deleteReceta(recipe.id)">Deshabilitar</button>
+    </ng-template>
+  </app-generic-table>
+
+  @if (recetaToDelete() !== null) {
+    <app-confirm-modal
+      title="Confirmar deshabilitación"
+      message="¿Deseas deshabilitar esta receta? Si era la versión activa, el producto quedará sin receta activa."
+      confirmText="Deshabilitar"
+      cancelText="Cancelar"
+      btnType="danger"
+      (confirm)="confirmDeleteReceta()"
+      (cancel)="recetaToDelete.set(null)"
+    ></app-confirm-modal>
+  }
+</div>

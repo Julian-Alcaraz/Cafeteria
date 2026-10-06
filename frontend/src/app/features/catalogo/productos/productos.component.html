@@ -1,0 +1,41 @@
+<div class="page-container">
+  <div class="header-actions">
+    <h2>Gestión de Productos</h2>
+    <button class="btn btn-primary" (click)="openForm()">Nuevo Producto</button>
+  </div>
+
+  <app-generic-table
+    [data]="productos()"
+    [columns]="columns"
+  >
+    <ng-template let-product>
+      <button class="btn btn-sm btn-secondary" (click)="openForm(product)">Editar</button>
+      <button class="btn btn-sm btn-info" (click)="duplicateProduct(product)">Copiar</button>
+      <button class="btn btn-sm btn-danger" (click)="deleteProducto(product.id)">Deshabilitar</button>
+    </ng-template>
+  </app-generic-table>
+
+  @if (showForm()) {
+    <app-producto-form
+      [product]="editingProduct()"
+      [isCopyMode]="isCopyMode()"
+      [productTypes]="productTypes()"
+      [categories]="categories()"
+      [isSaving]="isSaving()"
+      (save)="saveProducto($event)"
+      (cancel)="closeModals()"
+    ></app-producto-form>
+  }
+
+  @if (productToDelete() !== null) {
+    <app-confirm-modal
+      title="Confirmar deshabilitación"
+      message="¿Estás seguro de que deseas deshabilitar este producto? Ya no aparecerá en el catálogo."
+      confirmText="Deshabilitar"
+      cancelText="Cancelar"
+      btnType="danger"
+      (confirm)="confirmDeleteProducto()"
+      (cancel)="productToDelete.set(null)"
+    ></app-confirm-modal>
+  }
+</div>

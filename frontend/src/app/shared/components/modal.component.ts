@@ -29,6 +29,12 @@ import { Component, input } from '@angular/core';
     .modal-body {
       margin-bottom: 1.5rem;
     }
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
   `]
 })
 export class ModalComponent {

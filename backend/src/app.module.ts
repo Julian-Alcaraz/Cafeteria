@@ -9,6 +9,8 @@ import { UsersModule } from './modules/users/users.module.js';
 import { MenusModule } from './modules/menus/menus.module.js';
 import { PermissionsModule } from './modules/permissions/permissions.module.js';
 import { AuditModule } from './modules/audit/audit.module.js';
+import { CatalogModule } from './modules/catalog/catalog.module.js';
+import { RecipesModule } from './modules/recipes/recipes.module.js';
 import { AllExceptionsFilter } from './common/filters/http-exception.filter.js';
 import { ResponseInterceptor } from './common/interceptors/response.interceptor.js';
 import { AuditInterceptor } from './common/interceptors/audit.interceptor.js';
@@ -35,6 +37,8 @@ import { AuditInterceptor } from './common/interceptors/audit.interceptor.js';
     MenusModule,
     PermissionsModule,
     AuditModule,
+    CatalogModule,
+    RecipesModule,
   ],
   controllers: [AppController],
   providers: [

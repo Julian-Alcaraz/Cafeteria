@@ -1,0 +1,4 @@
+/* Usar estilos globales */
+.header-actions { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+.header-actions h2 { margin: 0; font-size: 1.5rem; }
+.btn-sm { padding: 0.35rem 0.65rem; font-size: 0.85rem; margin-right: 0.25rem; }

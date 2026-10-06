@@ -8,12 +8,15 @@ describe('SidebarComponent', () => {
   let component: SidebarComponent;
   let fixture: ComponentFixture<SidebarComponent>;
   let mockAuthService: any;
+  let router: any;
 
   beforeEach(async () => {
     mockAuthService = {
       session: signal({ username: 'testuser', menus: [{ label: 'Inicio', url: '/app' }] }),
       logout: vi.fn()
     };
+
+    router = { navigate: vi.fn() };
 
     await TestBed.configureTestingModule({
       imports: [SidebarComponent],

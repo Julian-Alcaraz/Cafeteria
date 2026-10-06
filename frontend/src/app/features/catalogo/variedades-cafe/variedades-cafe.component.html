@@ -1,0 +1,98 @@
+<div class="page-container">
+  <div class="header-actions">
+    <h2>Variedades de Café</h2>
+    <button class="btn btn-primary" (click)="openForm()">Nueva Variedad</button>
+  </div>
+
+  <app-generic-table [data]="variedades()" [columns]="columns">
+    <ng-template let-variety>
+      <button class="btn btn-sm btn-secondary" (click)="openForm(variety)">Editar</button>
+      <button class="btn btn-sm btn-info" (click)="duplicateVariety(variety)">Copiar</button>
+      <button class="btn btn-sm btn-danger" (click)="deleteVariedad(variety.id)">Deshabilitar</button>
+    </ng-template>
+  </app-generic-table>
+
+  @if (showForm()) {
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <app-modal [title]="editingVariety() && !isCopyMode() ? 'Editar Variedad de Café' : 'Nueva Variedad de Café'">
+
+        <div class="form-group">
+          <label for="cv-product">Producto Café en Grano *</label>
+          <span class="hint" style="display: block; margin-bottom: 0.5rem; font-size: 0.85em; color: var(--text-secondary);">
+            Solo se listan los productos libres. Cada variedad debe asociarse 1 a 1 con un producto.
+          </span>
+          <select id="cv-product" formControlName="productId" class="form-control">
+            <option [ngValue]="null">Seleccionar producto...</option>
+            @for (p of availableCoffeeBeans(); track p.id) {
+              <option [ngValue]="p.id">{{ p.name }}</option>
+            }
+          </select>
+          @if (!availableCoffeeBeans().length) {
+            <span class="hint error-text" style="display:block; margin-top:0.25rem">No hay productos disponibles. Crea un nuevo "Café en grano" primero.</span>
+          }
+          @if (form.controls.productId.invalid && form.controls.productId.touched) {
+            <span class="error-text">El producto es requerido.</span>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="cv-origin">Origen (País / Región) *</label>
+          <input id="cv-origin" type="text" formControlName="origin" class="form-control"
+            placeholder="Ej: Colombia, Brasil, Honduras" />
+          @if (form.controls.origin.invalid && form.controls.origin.touched) {
+            <span class="error-text">El origen es requerido.</span>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="cv-process">Proceso de beneficio</label>
+          <select id="cv-process" formControlName="process" class="form-control">
+            <option value="">Sin especificar</option>
+            <option value="lavado">Lavado</option>
+            <option value="natural">Natural</option>
+            <option value="honey">Honey</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="cv-roast">Nivel de tueste</label>
+          <select id="cv-roast" formControlName="roastLevel" class="form-control">
+            <option value="">Sin especificar</option>
+            <option value="claro">Claro</option>
+            <option value="medio">Medio</option>
+            <option value="oscuro">Oscuro</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="cv-notes">Notas de cata</label>
+          <textarea id="cv-notes" formControlName="notes" class="form-control" rows="2"
+            placeholder="Ej: Notas cítricas, caramelo, chocolate"></textarea>
+        </div>
+
+        <ng-container modal-actions>
+          <button type="button" class="btn" (click)="closeModals()">Cancelar</button>
+          <button type="submit" class="btn btn-primary" [disabled]="form.invalid || isSaving()">
+            @if (isSaving()) {
+              <i class="pi pi-spinner pi-spin"></i> Guardando...
+            } @else {
+              {{ editingVariety() && !isCopyMode() ? 'Actualizar' : 'Crear Variedad' }}
+            }
+          </button>
+        </ng-container>
+      </app-modal>
+    </form>
+  }
+
+  @if (varietyToDelete() !== null) {
+    <app-confirm-modal
+      title="Confirmar deshabilitación"
+      message="¿Deseas deshabilitar esta variedad de café?"
+      confirmText="Deshabilitar"
+      cancelText="Cancelar"
+      btnType="danger"
+      (confirm)="confirmDeleteVariedad()"
+      (cancel)="varietyToDelete.set(null)"
+    ></app-confirm-modal>
+  }
+</div>

@@ -23,6 +23,14 @@ export const routes: Routes = [
       {
         path: 'configuraciones',
         loadChildren: () => import('./features/configuraciones/configuraciones.routes').then(m => m.CONFIG_ROUTES)
+      },
+      {
+        path: 'catalogo',
+        loadChildren: () => import('./features/catalogo/catalogo.routes').then(m => m.CATALOGO_ROUTES)
+      },
+      {
+        path: 'recetas',
+        loadChildren: () => import('./features/recetas/recetas.routes').then(m => m.RECETAS_ROUTES)
       }
     ]
   },
