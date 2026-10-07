@@ -31,6 +31,14 @@ export const routes: Routes = [
       {
         path: 'recetas',
         loadChildren: () => import('./features/recetas/recetas.routes').then(m => m.RECETAS_ROUTES)
+      },
+      {
+        path: 'tolvas',
+        loadChildren: () => import('./features/hoppers/hoppers.routes').then(m => m.HOPPERS_ROUTES)
+      },
+      {
+        path: 'inventario',
+        loadChildren: () => import('./features/inventory/inventory.routes').then(m => m.INVENTORY_ROUTES)
       }
     ]
   },

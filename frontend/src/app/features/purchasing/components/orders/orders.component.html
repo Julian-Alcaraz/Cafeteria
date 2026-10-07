@@ -1,0 +1,134 @@
+<div class="page-container">
+  <div class="header-actions">
+    <h2>Órdenes de Compra</h2>
+    <button class="btn btn-primary" (click)="openForm()">Nueva Orden</button>
+  </div>
+
+  <app-generic-table [data]="orders()" [columns]="columns">
+    <ng-template let-order>
+      <button class="btn btn-sm btn-outline" (click)="viewDetails(order)">Ver Detalle</button>
+      @if (order.status !== 'RECEIVED') {
+        <button class="btn btn-sm btn-primary" style="margin-left: 0.5rem;" (click)="receiveOrder(order.id)">Recibir</button>
+      }
+    </ng-template>
+  </app-generic-table>
+
+  <!-- FORMULARIO NUEVA ORDEN -->
+  @if (showForm()) {
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <app-modal title="Nueva Orden de Compra" (close)="closeForm()">
+        <div class="form-row">
+          <div class="form-group" style="flex: 1;">
+            <label>Proveedor *</label>
+            <select formControlName="supplierId" class="form-control">
+              <option [ngValue]="null">Seleccionar...</option>
+              @for (sup of suppliers(); track sup.id) {
+                <option [ngValue]="sup.id">{{ sup.name }}</option>
+              }
+            </select>
+          </div>
+          <div class="form-group" style="flex: 1;">
+            <label>Fecha Esperada</label>
+            <input type="date" formControlName="expectedAt" class="form-control">
+          </div>
+        </div>
+
+        <hr>
+        <h4 style="margin-bottom: 1.5rem;">Ítems</h4>
+        <div formArrayName="items">
+          @for (item of items.controls; track $index) {
+            <div [formGroupName]="$index" class="form-row array-item-box" style="align-items: flex-end;">
+              <span class="array-item-number"># {{ $index + 1 }}</span>
+              <button type="button" class="btn-remove-item" (click)="removeItem($index)" [disabled]="items.length === 1">X</button>
+              
+              <div class="form-group" style="flex: 2; margin-bottom: 0;">
+                <label>Producto</label>
+                <select formControlName="productId" class="form-control">
+                  <option [ngValue]="null">Seleccionar...</option>
+                  @for (prod of products(); track prod.id) {
+                    <option [ngValue]="prod.id">{{ prod.name }}</option>
+                  }
+                </select>
+              </div>
+              <div class="form-group" style="flex: 1; margin-bottom: 0;">
+                <label>Cantidad</label>
+                <div style="display: flex; gap: 0.5rem; align-items: center;">
+                  <input type="number" step="0.01" formControlName="quantity" class="form-control" style="flex: 1;">
+                  <input type="text" formControlName="unit" class="form-control" style="width: 60px; background: #e9ecef;" readonly>
+                </div>
+              </div>
+              <div class="form-group" style="flex: 1; margin-bottom: 0;">
+                <label>Costo Unitario</label>
+                <input type="number" step="0.01" formControlName="unitCost" class="form-control">
+              </div>
+            </div>
+          }
+        </div>
+        <button type="button" class="btn btn-sm btn-outline" (click)="addItem()">+ Agregar Ítem</button>
+
+        <ng-container modal-actions>
+          <button type="button" class="btn btn-secondary" (click)="closeForm()" [disabled]="isSaving()">Cancelar</button>
+          <button type="submit" class="btn btn-primary" [disabled]="isSaving()">
+            @if (isSaving()) { <i class="pi pi-spinner pi-spin"></i> }
+            Crear Orden
+          </button>
+        </ng-container>
+      </app-modal>
+    </form>
+  }
+
+  <!-- DETALLE ORDEN -->
+  @if (viewOrder()) {
+    <app-modal [title]="'Orden ' + viewOrder()!.code" (close)="closeDetails()">
+      <div style="margin-bottom: 1rem;">
+        <p><strong>Proveedor:</strong> {{ viewOrder()!.supplier?.name }}</p>
+        <p><strong>Estado:</strong> {{ viewOrder()!.status }}</p>
+        <p><strong>Total:</strong> ${{ (viewOrder()!.totalAmount * 1).toFixed(2) }}</p>
+      </div>
+      
+      <table class="table" style="width: 100%;">
+        <thead>
+          <tr>
+            <th>Producto</th>
+            <th>Cantidad</th>
+            <th>Costo U.</th>
+            <th>Subtotal</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (item of viewOrder()!.items; track item.id) {
+            <tr>
+              <td>{{ item.product?.name }}</td>
+              <td>{{ item.quantity }} {{ item.unit }}</td>
+              <td>${{ (item.unitCost * 1).toFixed(2) }}</td>
+              <td>${{ (item.quantity * item.unitCost).toFixed(2) }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+
+      <ng-container modal-actions>
+        @if (viewOrder()!.status !== 'RECEIVED') {
+          <button type="button" class="btn btn-primary" (click)="receiveOrder(viewOrder()!.id)" [disabled]="isReceiving()">
+            @if (isReceiving()) { <i class="pi pi-spinner pi-spin"></i> }
+            Marcar como Recibida
+          </button>
+        }
+        <button type="button" class="btn btn-secondary" (click)="closeDetails()" [disabled]="isReceiving()">Cerrar</button>
+      </ng-container>
+    </app-modal>
+  }
+
+  <!-- MODAL DE CONFIRMACIÓN DE RECEPCIÓN -->
+  @if (orderToReceive() !== null) {
+    <app-confirm-modal
+      title="Confirmar Recepción"
+      message="¿Estás seguro de recibir esta orden? Esto inyectará el stock en el inventario de manera permanente."
+      confirmText="Recibir"
+      cancelText="Cancelar"
+      btnType="primary"
+      (confirm)="confirmReceiveOrder()"
+      (cancel)="orderToReceive.set(null)"
+    ></app-confirm-modal>
+  }
+</div>

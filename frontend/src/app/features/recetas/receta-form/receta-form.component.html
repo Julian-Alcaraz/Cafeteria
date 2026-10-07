@@ -64,7 +64,7 @@
 
       <!-- SECCIÓN: INGREDIENTES -->
       <div class="section card">
-        <div class="section-header">
+        <div class="section-header" style="margin-bottom: 1.5rem;">
           <h3>Ingredientes</h3>
           <button type="button" class="btn btn-sm btn-secondary" (click)="addIngredient()">
             <i class="pi pi-plus"></i> Añadir Ingrediente
@@ -73,13 +73,11 @@
 
         <div formArrayName="ingredients" class="ingredients-list">
           @for (ing of ingredientsFormArray.controls; track $index) {
-            <div [formGroupName]="$index" class="ingredient-row">
-              <div class="ingredient-header">
-                <span class="ingredient-num">#{{ $index + 1 }}</span>
-                <button type="button" class="btn btn-sm btn-danger" (click)="removeIngredient($index)" title="Eliminar">
-                  <i class="pi pi-times"></i>
-                </button>
-              </div>
+            <div [formGroupName]="$index" class="array-item-box">
+              <span class="array-item-number"># {{ $index + 1 }}</span>
+              <button type="button" class="btn-remove-item" (click)="removeIngredient($index)" title="Eliminar">
+                <i class="pi pi-times"></i>
+              </button>
               
               <div class="ingredient-fields">
                 <div class="form-group">

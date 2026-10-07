@@ -321,11 +321,19 @@ input[type="checkbox"]:focus {
   background: var(--bg-surface);
   padding: 2rem;
   border-radius: 12px;
-  width: 460px;
+  width: fit-content;
+  min-width: 460px;
   max-width: 90vw;
   max-height: 90vh;
   overflow-y: auto;
   box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+}
+
+@media (max-width: 500px) {
+  .modal {
+    min-width: 95vw;
+    padding: 1.5rem;
+  }
 }
 
 .modal h3 {
@@ -354,4 +362,39 @@ input[type="checkbox"]:focus {
   flex-wrap: wrap;
   gap: 1rem;
   margin-bottom: 2rem;
+}
+
+/* Global Form Array Item Box */
+.array-item-box {
+  position: relative;
+  border: 1px solid var(--color-primary); /* Darker brown border */
+  border-radius: 12px; /* More rounded */
+  padding: 2.5rem 1rem 1rem 1rem;
+  background: var(--bg-surface); /* Normal background */
+  margin-bottom: 1rem;
+}
+.array-item-box .array-item-number {
+  position: absolute;
+  top: 0.5rem;
+  left: 0.75rem;
+  font-weight: 600;
+  color: var(--color-primary);
+  font-size: 0.9rem;
+}
+.array-item-box .btn-remove-item {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.85rem;
+  line-height: 1;
+  background-color: var(--color-accent);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.array-item-box .btn-remove-item:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }

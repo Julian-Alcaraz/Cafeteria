@@ -40,7 +40,7 @@ export class TableActionsDirective {}
           </tr>
         </thead>
         <tbody>
-          @for (row of filteredAndSortedData(); track row.id) {
+          @for (row of filteredAndSortedData(); track row.id || $index) {
             <tr>
               @for (col of columns(); track col.field) {
                 <td>

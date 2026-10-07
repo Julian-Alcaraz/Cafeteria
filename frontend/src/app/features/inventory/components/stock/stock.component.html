@@ -1,0 +1,26 @@
+<div class="page-container">
+  <div class="header-actions">
+    <h2>Inventario Actual</h2>
+  </div>
+
+  <app-generic-table [data]="stocks()" [columns]="columns">
+    <ng-template let-stock>
+      <button class="btn btn-sm btn-outline" (click)="viewMovements(stock)">Ver Movimientos</button>
+    </ng-template>
+  </app-generic-table>
+
+  @if (showMovements()) {
+    <app-modal [title]="'Movimientos de ' + selectedProductName()" (close)="closeMovements()">
+      @if (isLoadingMovements()) {
+        <div style="text-align:center; padding: 2rem;">
+          <i class="pi pi-spinner pi-spin" style="font-size: 2rem;"></i>
+        </div>
+      } @else {
+        <app-generic-table [data]="movements()" [columns]="movColumns"></app-generic-table>
+      }
+      <ng-container modal-actions>
+        <button type="button" class="btn btn-secondary" (click)="closeMovements()">Cerrar</button>
+      </ng-container>
+    </app-modal>
+  }
+</div>

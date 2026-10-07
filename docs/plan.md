@@ -18,13 +18,17 @@ Este documento es un registro estático paso a paso del plan del proyecto y su p
   - `[x]` Lógica: Duplicación de registros rápida (Botón Copiar).
   - `[x]` Reparación del Sistema de Permisos para sub-rutas anidadas de forma estricta.
 
-## Sprint 2: Tolvas e Inventario (PRÓXIMO) ⏳
-- **Estado**: ⏳ Pendiente
-- **Objetivos**:
-  - Implementar configuración dinámica de Tolvas de Café (HopperConfigs).
-  - Control de inventario general y visualización de Stock.
-  - Entradas de stock mediante Compras / Recepción de lotes (FIFO).
-  - Trazabilidad e historial de movimientos.
+## Sprint 2: Tolvas e Inventario (COMPLETADO) ✅
+- **Estado**: ✅ Completado de manera exitosa.
+- **Backend**:
+  - `[x]` Creación de base de datos y migraciones (Hoppers, Inventory, Purchasing).
+  - `[x]` Servicios y lógica para Lotes (FIFO), Movimientos (Trazabilidad) y Ajustes.
+  - `[x]` Entradas de stock mediante Compras / Recepción de lotes.
+- **Frontend**:
+  - `[x]` UI Configuración dinámica de Tolvas de Café.
+  - `[x]` Visor de Stock en vivo y trazabilidad de movimientos.
+  - `[x]` ABM Proveedores.
+  - `[x]` Flujo de Órdenes de Compra y Recepción de Lotes.
 
 ## Sprint 3: Cuentas y Ventas (BACKLOG) 📋
 - **Estado**: 📋 Backlog

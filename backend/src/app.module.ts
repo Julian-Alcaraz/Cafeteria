@@ -14,6 +14,9 @@ import { RecipesModule } from './modules/recipes/recipes.module.js';
 import { AllExceptionsFilter } from './common/filters/http-exception.filter.js';
 import { ResponseInterceptor } from './common/interceptors/response.interceptor.js';
 import { AuditInterceptor } from './common/interceptors/audit.interceptor.js';
+import { HoppersModule } from './modules/hoppers/hoppers.module.js';
+import { InventoryModule } from './modules/inventory/inventory.module.js';
+import { PurchasingModule } from './modules/purchasing/purchasing.module.js';
 
 @Module({
   imports: [
@@ -39,6 +42,9 @@ import { AuditInterceptor } from './common/interceptors/audit.interceptor.js';
     AuditModule,
     CatalogModule,
     RecipesModule,
+    HoppersModule,
+    InventoryModule,
+    PurchasingModule,
   ],
   controllers: [AppController],
   providers: [
