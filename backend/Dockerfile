@@ -1,5 +1,5 @@
 # Etapa de compilación
-FROM node:20-alpine AS build
+FROM node:22-alpine AS build
 WORKDIR /app
 COPY package*.json ./
 RUN npm pkg delete scripts.prepare && npm install
@@ -7,7 +7,7 @@ COPY . .
 RUN npm run build
 
 # Etapa de producción
-FROM node:20-alpine
+FROM node:22-alpine
 WORKDIR /app
 COPY package*.json ./
 # Instalamos solo las dependencias de producción
