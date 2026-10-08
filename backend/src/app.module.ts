@@ -17,6 +17,7 @@ import { AuditInterceptor } from './common/interceptors/audit.interceptor.js';
 import { HoppersModule } from './modules/hoppers/hoppers.module.js';
 import { InventoryModule } from './modules/inventory/inventory.module.js';
 import { PurchasingModule } from './modules/purchasing/purchasing.module.js';
+import { PosModule } from './modules/pos/pos.module.js';
 
 @Module({
   imports: [
@@ -45,6 +46,7 @@ import { PurchasingModule } from './modules/purchasing/purchasing.module.js';
     HoppersModule,
     InventoryModule,
     PurchasingModule,
+    PosModule,
   ],
   controllers: [AppController],
   providers: [

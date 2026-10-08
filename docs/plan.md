@@ -30,17 +30,18 @@ Este documento es un registro estático paso a paso del plan del proyecto y su p
   - `[x]` ABM Proveedores.
   - `[x]` Flujo de Órdenes de Compra y Recepción de Lotes.
 
-## Sprint 3: Cuentas y Ventas (BACKLOG) 📋
-- **Estado**: 📋 Backlog
+## Sprint 3: Cuentas y Ventas (COMPLETADO) ✅
+- **Estado**: ✅ Completado de manera exitosa.
 - **Objetivos**:
-  - Pantalla principal del POS (Punto de Venta).
-  - Apertura y cierre de cuentas.
-  - Agregado de ítems (Descuento en tiempo real de inventario y tolvas).
-  - Manejo de entregas no cobradas con motivo obligatorio.
-  - Sistema de pagos y cierre de mesa.
+  - `[x]` Pantalla principal del POS (Punto de Venta).
+  - `[x]` Apertura y cierre de cuentas.
+  - `[x]` Agregado de ítems (Descuento en tiempo real de inventario y tolvas).
+  - `[x]` Manejo de entregas no cobradas con motivo obligatorio.
+  - `[x]` Sistema de pagos y cierre de mesa.
+  - `[x]` Historial de Ventas para Auditoría.
 
-## Sprint 4: Reportes y Costos (BACKLOG) 📋
-- **Estado**: 📋 Backlog
+## Sprint 4: Reportes y Costos (BACKLOG) ⏳
+- **Estado**: ⏳ Backlog
 - **Objetivos**:
   - Congelamiento de precios de costo al momento de venta.
   - Reporte de rentabilidad (Costo vs Precio de Venta).
