@@ -12,8 +12,9 @@ WORKDIR /app
 COPY package*.json ./
 # Instalamos solo las dependencias de producción
 RUN npm pkg delete scripts.prepare && npm install --omit=dev
-# Copiamos el build
+# Copiamos el build y las llaves JWT
 COPY --from=build /app/dist ./dist
+COPY --from=build /app/keys ./keys
 
 # Variables de entorno
 ENV NODE_ENV=production
