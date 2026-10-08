@@ -2,7 +2,7 @@
 FROM node:20-alpine AS build
 WORKDIR /app
 COPY package*.json ./
-RUN npm ci
+RUN npm pkg delete scripts.prepare && npm install
 COPY . .
 RUN npm run build
 
@@ -11,7 +11,7 @@ FROM node:20-alpine
 WORKDIR /app
 COPY package*.json ./
 # Instalamos solo las dependencias de producción
-RUN npm ci --omit=dev
+RUN npm pkg delete scripts.prepare && npm install --omit=dev
 # Copiamos el build
 COPY --from=build /app/dist ./dist
 

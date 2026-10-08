@@ -1,0 +1,7 @@
+node_modules
+dist
+.git
+.agents
+coverage
+.angular
+.env
