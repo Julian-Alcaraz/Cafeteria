@@ -21,7 +21,13 @@ El proyecto requiere ser desplegado en entornos locales separados (Testing y Pro
    - Las migraciones en `testing` y `producción` se configurarán para ejecutarse **automáticamente** antes del inicio del servidor Node (en el comando de inicio o contenedor), asegurando que la estructura de la base de datos se mantenga sin borrar datos preexistentes.
    - Para desarrollo, se proveerán comandos manuales (ej. `npm run db:migrate`, `npm run db:seed`) para controlar la estructura y resetear si es requerido.
 
+4. **Reverse Proxy en Nginx y Exposición a Internet (Cloudflare Tunnel):**
+   - **Problema:** Usar una IP privada fija (`192.168.0.16:3000/api`) en el frontend impide que clientes externos a la red local puedan comunicarse con el backend al exponer el servidor a Internet.
+   - **Solución de Ruteo Interno:** Se configuró `frontend/nginx.conf` con un bloque `location /api/` que actúa como Reverse Proxy (`proxy_pass http://backend:3000/api/`) a través de la red interna de Docker, y `apiUrl: '/api'` en los archivos de environment (`environment.production.ts` y `environment.staging.ts`). De esta forma, tanto el tráfico web como las llamadas a la API pasan por un único punto de entrada (el puerto 80 del contenedor frontend), funcionando simultáneamente en red local (`http://192.168.0.16:8081`) y en Internet sin depender de una IP fija.
+   - **Exposición a Internet sin abrir puertos (Quick Tunnel):** En `docker-compose.test.yml` se incorporó el servicio `tunnel` (`cloudflare/cloudflared:latest`) apuntando a `http://frontend:80`, generando una URL pública HTTPS (`*.trycloudflare.com`) sin necesidad de configurar Port Forwarding ni lidiar con CGNAT.
+
 ## Consecuencias
 - La inicialización por primera vez de un ambiente requiere correr los comandos de migración.
 - El servidor backend no iniciará (y el contenedor fallará/reiniciará) si la base de datos no está disponible.
 - Los desarrolladores necesitarán ejecutar `docker-compose -f docker-compose.dev.yml up -d` antes de iniciar el backend localmente.
+- Para conocer la URL pública generada en el entorno de testing, basta con inspeccionar los logs del contenedor `cafeteria_tunnel_test` (`docker logs cafeteria_tunnel_test`).
