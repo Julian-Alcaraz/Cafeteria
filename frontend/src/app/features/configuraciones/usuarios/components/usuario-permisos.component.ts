@@ -14,7 +14,7 @@ import { ModalComponent } from '@shared/components/modal.component';
       
       <div class="menu-list">
         <ng-template #menuNode let-node="node" let-level="level">
-          <div class="menu-item" [style.marginLeft.px]="level * 24" [style.marginBottom.px]="level === 0 ? 8 : 4">
+          <div class="menu-item" [style.marginLeft.rem]="level * 1.5" [style.marginBottom.rem]="level === 0 ? 0.5 : 0.25">
             <input type="checkbox" 
                    [id]="'menu-'+node.id" 
                    [checked]="selectedIds.has(node.requiredPermission!.id)"
