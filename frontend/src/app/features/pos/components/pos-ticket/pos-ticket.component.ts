@@ -146,7 +146,7 @@ import { ConfirmModalComponent } from '@shared/components/confirm-modal.componen
       border-top: 1px solid var(--color-border);
     }
     .ticket-items {
-      max-height: 400px;
+      max-height: 25rem;
       overflow-y: auto;
     }
     .item-row {

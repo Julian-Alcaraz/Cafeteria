@@ -34,13 +34,13 @@ import { RouterModule } from '@angular/router';
       border-radius: 16px;
       box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
       text-align: center;
-      max-width: 450px;
+      max-width: 28.125rem;
       width: 100%;
       border-top: 4px solid #dc3545;
     }
     .icon-wrapper {
-      width: 80px;
-      height: 80px;
+      width: 5rem;
+      height: 5rem;
       background-color: #fee2e2;
       border-radius: 50%;
       display: flex;

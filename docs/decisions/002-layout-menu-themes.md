@@ -20,6 +20,10 @@ El sistema contaba con un `LayoutComponent` monolítico que contenía la lógica
 - El componente alterna una clase `.dark-theme` sobre el tag `<body>` para sobreescribir las variables CSS globales, y persiste la decisión en `localStorage('app-theme')`.
 - **Razón**: Proveer flexibilidad estética al usuario final y establecer una arquitectura base limpia para futuras alteraciones visuales sin recargar estilos (CSS puro + cascade).
 
+### 4. Escalado Visual Global (Densidad UI al 90%)
+- Se definió `html { font-size: 90%; }` en `styles.css` y se estandarizaron en unidades relativas (`rem`) las dimensiones de los contenedores estructurales (`sidebar`, `topbar`, `modal`, `login-box`, `pos-layout` y grillas).
+- **Razón**: Lograr que la aplicación al 100% de zoom nativo del navegador se perciba visualmente con la densidad y proporciones de un zoom al 90% (más compacta y estética), evitando problemas de cálculo con `100vh` o posicionamiento de modales que generaría la propiedad `zoom`.
+
 ## Consecuencias
 - La interfaz es 100% responsiva con comportamientos nativos diferenciados (colapso de barra a nivel ícono en escritorio y cajón deslizante en móvil).
 - Facilita testear independientemente el Theme, el Header y el Menú lateral.

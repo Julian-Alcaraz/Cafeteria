@@ -16,7 +16,7 @@
 .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; border-bottom: 1px solid #eee; padding-bottom: 0.5rem; }
 .section-header h3 { margin: 0; border: none; padding: 0; }
 
-.form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; }
+.form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(12.5rem, 1fr)); gap: 1rem; }
 .form-group { margin-bottom: 1rem; }
 .form-group label { display: block; margin-bottom: 0.35rem; font-weight: 500; font-size: 0.9rem; }
 .full-width { grid-column: 1 / -1; }
@@ -25,7 +25,7 @@
 .ingredient-row { border: 1px solid #e5e7eb; border-radius: 6px; padding: 1rem; background: #fafafa; }
 .ingredient-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid #eee; }
 .ingredient-num { font-weight: bold; color: #6b7280; }
-.ingredient-fields { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; align-items: start; }
+.ingredient-fields { display: grid; grid-template-columns: repeat(auto-fit, minmax(12.5rem, 1fr)); gap: 1rem; align-items: start; }
 
 .qty-unit { display: flex; gap: 0.5rem; }
 .qty-field { flex: 2; }

@@ -82,7 +82,7 @@ import { ModalComponent } from '@shared/components/modal.component';
     .pos-layout {
       display: flex;
       gap: 1rem;
-      height: calc(100vh - 100px); /* Adjust based on your header */
+      height: calc(100vh - 9rem); /* Adjust based on your header */
     }
     .pos-left {
       flex: 2;
@@ -102,7 +102,7 @@ import { ModalComponent } from '@shared/components/modal.component';
       flex-direction: column;
       box-shadow: 0 4px 6px rgba(0,0,0,0.05);
       transition: flex 0.3s ease;
-      min-width: 350px;
+      min-width: 21.875rem;
     }
     .pos-layout.menu-hidden .pos-left {
       display: none;

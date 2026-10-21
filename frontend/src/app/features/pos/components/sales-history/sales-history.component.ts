@@ -125,7 +125,7 @@ import { DatePipe } from '@angular/common';
     .inner-table th { background-color: rgba(0,0,0,0.02); border-bottom: 2px solid var(--border-subtle, #e5e7eb); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); }
     .inner-table td { font-size: 0.9rem; }
     
-    .btn-icon { background: white; border: 1px solid var(--border-subtle); cursor: pointer; color: var(--color-primary); display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; transition: all 0.2s; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
+    .btn-icon { background: white; border: 1px solid var(--border-subtle); cursor: pointer; color: var(--color-primary); display: flex; align-items: center; justify-content: center; width: 2rem; height: 2rem; border-radius: 50%; transition: all 0.2s; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
     .btn-icon:hover { background-color: var(--color-primary); color: white; border-color: var(--color-primary); }
     
     .badge { padding: 0.3rem 0.6rem; border-radius: 6px; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.02em; }

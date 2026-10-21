@@ -34,7 +34,7 @@ h2 {
   padding: 0.5rem 1rem;
   border: 1px solid #d1d5db;
   border-radius: 6px;
-  min-width: 150px;
+  min-width: 9.375rem;
 }
 
 .table-responsive {
@@ -60,7 +60,7 @@ th {
 }
 
 .truncate {
-  max-width: 250px;
+  max-width: 15.625rem;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

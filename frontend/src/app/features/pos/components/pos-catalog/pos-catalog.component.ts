@@ -42,7 +42,7 @@ import { ApiResponse } from '../../pos.service';
     .cat-btn:hover { border-color: var(--color-primary); color: var(--color-primary); }
     .cat-btn.active { background: var(--color-primary); color: white; border-color: var(--color-primary); }
     
-    .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 1.2rem; padding-top: 0.5rem; }
+    .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr)); gap: 1.2rem; padding-top: 0.5rem; }
     .product-card { 
       background: #faf6f0; 
       border: 2px solid var(--color-primary); 
@@ -55,7 +55,7 @@ import { ApiResponse } from '../../pos.service';
       flex-direction: column; 
       align-items: center;
       justify-content: center; 
-      min-height: 140px; 
+      min-height: 8.75rem; 
       box-shadow: 0 4px 6px rgba(0,0,0,0.04);
     }
     .product-card:active { transform: scale(0.96); }

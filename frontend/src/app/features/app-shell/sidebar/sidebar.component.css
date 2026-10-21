@@ -1,11 +1,11 @@
 .sidebar {
-  width: 280px;
+  width: 17.5rem;
   background-color: var(--bg-surface);
   display: flex;
   flex-direction: column;
   position: fixed;
   top: 0;
-  left: -280px;
+  left: -17.5rem;
   height: 100%;
   z-index: 1000;
   transition: left 0.3s ease;
@@ -27,7 +27,7 @@
 }
 
 .sidebar-header {
-  height: 80px;
+  height: 5rem;
   padding: 0 1.5rem;
   display: flex;
   justify-content: space-between;
@@ -179,7 +179,7 @@
   .sidebar {
     position: static;
     left: 0;
-    width: 80px; /* Collapsed state */
+    width: 5rem; /* Collapsed state */
     box-shadow: none;
     border-right: 1px solid var(--border-subtle);
     overflow-x: hidden;
@@ -187,7 +187,7 @@
   }
   
   .sidebar.open {
-    width: 280px; /* Expanded state */
+    width: 17.5rem; /* Expanded state */
   }
   
   .sidebar-overlay {
@@ -248,8 +248,8 @@
 
   .sidebar:not(.open) .logout-btn {
     padding: 0;
-    width: 44px;
-    height: 44px;
+    width: 2.75rem;
+    height: 2.75rem;
     border-radius: 50%;
   }
   

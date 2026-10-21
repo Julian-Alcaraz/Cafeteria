@@ -22,7 +22,7 @@ export class TableActionsDirective {}
   template: `
     @if (searchable()) {
       <div class="mb-3" style="display: flex; justify-content: flex-end;">
-        <input type="text" class="form-control" style="max-width: 300px; padding: 0.5rem; border-radius: 4px; border: 1px solid #ccc;" placeholder="Buscar..." (input)="onSearch($event)">
+        <input type="text" class="form-control" style="max-width: 18.75rem; padding: 0.5rem; border-radius: 4px; border: 1px solid #ccc;" placeholder="Buscar..." (input)="onSearch($event)">
       </div>
     }
     <div class="table-responsive">

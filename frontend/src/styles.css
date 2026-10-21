@@ -54,6 +54,10 @@ body.dark-theme {
 }
 
 /* Global Styles */
+html {
+  font-size: 90%;
+}
+
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   background-color: var(--bg-primary);
@@ -322,7 +326,7 @@ input[type="checkbox"]:focus {
   padding: 2rem;
   border-radius: 12px;
   width: fit-content;
-  min-width: 460px;
+  min-width: 28.75rem;
   max-width: 90vw;
   max-height: 90vh;
   overflow-y: auto;
@@ -351,7 +355,7 @@ input[type="checkbox"]:focus {
 /* Make tables consume full width within the wrapper */
 .table-responsive table {
   width: 100%;
-  min-width: 600px; /* Minimum width before scrolling triggers */
+  min-width: 37.5rem; /* Minimum width before scrolling triggers */
 }
 
 /* Header actions wrap for mobile */
