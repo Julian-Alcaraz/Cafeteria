@@ -63,6 +63,7 @@ services:
   tunnel-notifier:
     image: curlimages/curl:latest
     container_name: cafeteria_tunnel_notifier_test
+    hostname: cafeteria_test
     entrypoint:
       - /bin/sh
       - -c
@@ -71,12 +72,22 @@ services:
         while true; do
           URL=$$(curl -s http://tunnel:2000/metrics | grep -o 'https://[-a-z0-9]*\.trycloudflare\.com' | head -n 1)
           if [ -n "$$URL" ] && [ "$$URL" != "$$LAST_URL" ]; then
-            echo "Nuevo tunel detectado: $$URL. Enviando correo..."
-            curl -sL -H "Content-Type: text/plain; charset=utf-8" \
-              -d "Hola Julian, el servidor de Cafeteria (Testing) ya esta activo en Internet. Ingresa desde aqui: $$URL" \
-              "https://script.google.com/macros/s/AKfycbxVS4jb4JAlTZimqCKm7Jgb4ofUCFD0uwrsU9zB9YfwL72sdLLoDDmtd05_-CR5xjs3dA/exec"
-            echo ""
-            LAST_URL="$$URL"
+            FRONT_IP=$$(getent hosts frontend | awk '{print $$1}' | head -n 1)
+            SERVER_NAME=$$(nslookup "$$FRONT_IP" 2>/dev/null | grep 'name =' | head -n 1 | sed 's/.*name = //; s/\..*//; s/_frontend//; s/_/ /g')
+            if [ -z "$$SERVER_NAME" ]; then
+              SERVER_NAME=$$(echo "$$HOSTNAME" | sed 's/_/ /g')
+            fi
+            SERVER_PARAM=$$(echo "$$SERVER_NAME" | sed 's/ /%20/g')
+            echo "Nuevo tunel detectado para [$$SERVER_NAME]: $$URL. Enviando correo..."
+            RESPONSE=$$(curl -sL -H "Content-Type: text/plain; charset=utf-8" \
+              -d "Servidor: $$SERVER_NAME - Link de acceso: $$URL" \
+              "https://script.google.com/macros/s/AKfycbxVS4jb4JAlTZimqCKm7Jgb4ofUCFD0uwrsU9zB9YfwL72sdLLoDDmtd05_-CR5xjs3dA/exec?server=$$SERVER_PARAM")
+            if [ "$$RESPONSE" = "OK" ]; then
+              echo "Correo enviado correctamente para $$SERVER_NAME."
+              LAST_URL="$$URL"
+            else
+              echo "Error al enviar correo (respuesta: $$RESPONSE). Reintentando..."
+            fi
           fi
           sleep 10
         done
